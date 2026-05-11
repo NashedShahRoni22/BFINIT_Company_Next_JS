@@ -13,7 +13,7 @@ const EcommerceHome = () => {
     <div>
       <BfiniteWeb3Hero />
       <SiteShowCase />
-      {/* <NewPricing /> */}
+      <NewPricing />
       <FreeGifts />
       <Overview />
       <Features />

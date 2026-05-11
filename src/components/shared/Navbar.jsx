@@ -16,7 +16,7 @@ import {
 import { usePathname } from "next/navigation";
 
 const Navbar = () => {
-  const { pathname } = usePathname();
+  const pathname = usePathname();
   const [showNav, setShowNav] = useState(false);
   const [showChild, setShowChild] = useState("");
   const [showSubMenu, setShowSubMenu] = useState(null);
@@ -115,9 +115,12 @@ const Navbar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+  console.log("isScrolled : ", isScrolled);
+  console.log("Not Home : ", !isHome);
+
   return (
     <nav
-      className={`fixed z-50 w-full border-b border-primary font-roboto ${isScrolled || !isHome ? "top-0 bg-white" : "top-0 bg-transparent"}`}>
+      className={`fixed z-50 w-full border-b border-primary font-roboto ${isScrolled || !isHome ? "top-0 bg-white" : "top-0 md:bg-transparent bg-white"}`}>
       <Container>
         <section
           className={`relative flex items-center justify-between py-4 text-black`}>
@@ -162,7 +165,7 @@ const Navbar = () => {
                                     <Link
                                       onClick={() => setShowSubMenu(null)}
                                       key={i}
-                                      to={mcc.link}
+                                      href={mcc.link}
                                       className="flex gap-1.5 duration-300 ease-linear hover:translate-x-3 hover:font-semibold hover:text-primary">
                                       <ChevronRight className="min-w-fit text-2xl" />
                                       {mcc.name}
@@ -216,11 +219,15 @@ const Navbar = () => {
 
           {/* mobile view  */}
           {showNav ? (
-            <button className="lg:hidden" onClick={() => setShowNav(!showNav)}>
+            <button
+              className="lg:hidden cursor-pointer"
+              onClick={() => setShowNav(!showNav)}>
               <X className="text-2xl" />
             </button>
           ) : (
-            <button className="lg:hidden" onClick={() => setShowNav(!showNav)}>
+            <button
+              className="lg:hidden cursor-pointer"
+              onClick={() => setShowNav(!showNav)}>
               <Menu className="text-xl" />
             </button>
           )}
@@ -228,7 +235,7 @@ const Navbar = () => {
           {/* desktop mode contact button */}
           <Link
             href="/contact"
-            className={`group hidden h-fit items-center gap-2.5 rounded-full border px-4 py-2 font-medium shadow transition-all duration-300 ease-linear lg:flex ${isScrolled || isHome ? "border-primary/25 bg-[#242D2B] text-white hover:bg-[#090B0B]" : "border-transparent bg-brand text-white hover:bg-brand/90"}`}>
+            className={`group hidden h-fit items-center gap-2.5 rounded-full border px-4 py-2 font-medium shadow transition-all duration-300 ease-linear lg:flex ${isScrolled || !isHome ? "border-primary/25 bg-[#242D2B] text-white hover:bg-[#090B0B]" : "border-transparent bg-brand text-white hover:bg-brand/90"}`}>
             Contact{" "}
             <MoveUpRight className="duration-300 ease-linear group-hover:rotate-45" />
           </Link>
@@ -237,7 +244,7 @@ const Navbar = () => {
 
       {/* mobile view  */}
       {showNav && (
-        <div className="top-18 absolute left-0 flex h-[80vh] min-w-full flex-col gap-4 overflow-y-scroll bg-white p-5 md:px-14 lg:hidden">
+        <div className="top-14 absolute left-0 flex h-[80vh] min-w-full flex-col gap-4 overflow-y-scroll bg-white p-5 md:px-14 lg:hidden">
           {updatedMenuItems.map((mi, i) => (
             <div key={i}>
               {mi.child ? (
@@ -272,7 +279,7 @@ const Navbar = () => {
                                 {mc.subChild.map((mcc, i) => (
                                   <Link
                                     key={i}
-                                    to={mcc.link}
+                                    href={mcc.link}
                                     onClick={() => setShowNav(!showNav)}
                                     className="flex gap-1.5 duration-300 ease-linear hover:translate-x-3 hover:font-semibold hover:text-primary">
                                     <ChevronRight className="text-2xl" />
@@ -324,7 +331,7 @@ const Navbar = () => {
             </div>
           ))}
           <Link
-            to={"/contact"}
+            href={"/contact"}
             onClick={() => setShowNav(!showNav)}
             className="w-fit rounded bg-primary px-4 py-2 text-white shadow">
             Contact Us

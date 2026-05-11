@@ -1,6 +1,6 @@
-export default async function page(props) {
-  console.log(props);
-  return (
-    <div className="w-full h-screen z-999">this is params {props.slug}</div>
-  );
+import React from "react";
+
+export default async function page({ props }) {
+  const { slug } = await props;
+  return <div>this is {slug} page</div>;
 }

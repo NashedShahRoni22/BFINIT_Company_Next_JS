@@ -28,7 +28,7 @@ export default function OurBrandCards() {
                     height={1000}
                     src={service.icon}
                     alt={service.title}
-                    className="h-40 w-auto object-cover"
+                    className="size-14 object-cover"
                   />
                 </div>
               ) : (
@@ -41,7 +41,7 @@ export default function OurBrandCards() {
                     height={1000}
                     src={service.icon}
                     alt={service.title}
-                    className="h-40 w-auto object-cover"
+                    className="size-14 object-cover"
                   />
                 </Link>
               )}

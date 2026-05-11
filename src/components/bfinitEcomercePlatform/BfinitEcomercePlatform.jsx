@@ -11,7 +11,7 @@ export default function BfinitEcomercePlatform() {
   return (
     <Container>
       <Hero />
-      {/* <NewPricing /> */}
+      <NewPricing />
       <Features />
       <FreeWebBuilderHero />
       <DesignShowCase />

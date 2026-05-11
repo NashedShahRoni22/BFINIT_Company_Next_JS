@@ -50,7 +50,7 @@ export default function Career() {
 
   return (
     <Container>
-      <section className="py-10 md:py-20 mx-5 md:container md:mx-auto">
+      <section className="py-10 md:py-20">
         <div className="grid lg:grid-cols-2 gap-4 lg:gap-8 place-items-center">
           <div className="flex flex-col gap-4 md:gap-8">
             <h5 className="md:text-2xl font-semibold">Career</h5>

@@ -21,7 +21,7 @@ const BfiniteWeb3Hero = () => {
               height={1000}
               src={scottyLogo}
               alt="Scotty Pumpkin"
-              className="w-full"
+              className="w-16"
             />
 
             {/* Label beneath logo */}
