@@ -1,5 +1,5 @@
 import Link from "next/link";
-import expertBg from "../../../../assets/server-home/expert-bg.jpg";
+import expertBg from "@/assets/server-home/expert-bg.jpg";
 import Image from "next/image";
 
 const benefitsData = [

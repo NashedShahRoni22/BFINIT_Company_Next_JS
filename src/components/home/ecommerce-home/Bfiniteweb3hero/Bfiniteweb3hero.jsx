@@ -1,4 +1,4 @@
-import scottyLogo from "../../../../assets/logo/scotty.webp";
+import scottyLogo from "@/assets/logo/scotty.webp";
 import Image from "next/image";
 import Container from "@/components/shared/Container";
 import Link from "next/link";

@@ -2,7 +2,7 @@
 import { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import { sliderData } from "../../../../data/sliderData";
+import { sliderData } from "@/data/sliderData";
 import "swiper/css";
 import Image from "next/image";
 import Container from "@/components/shared/Container";
@@ -24,7 +24,7 @@ export default function Overview() {
   return (
     <section className="bg-[#020617] py-10 text-white md:py-24">
       <Container>
-        <h2 className="font-inter mb-8 font-inter text-3xl font-semibold md:mb-10 md:text-[54px]">
+        <h2 className="font-inter mb-8 text-3xl font-semibold md:mb-10 md:text-[54px]">
           The one commerce platform behind it all
         </h2>
 

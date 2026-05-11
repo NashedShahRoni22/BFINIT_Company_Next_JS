@@ -1,13 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import { LiaSpinnerSolid } from "react-icons/lia";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { sassCheckoutData } from "@/data/sassCheckoutData";
 import { whiteLabelChecoutData } from "@/data/whiteLabelCheckoutData";
 
 export default function WhiteLabelCheckout({ type, id }) {
-  console.log({ type, id });
-
   const navigate = useRouter();
   const productData =
     type === "whitelabel"
@@ -126,7 +124,6 @@ export default function WhiteLabelCheckout({ type, id }) {
       if (data.success === true) {
         setLoading(false);
         window.alert(data.message);
-        console.log(data);
         const localData = {
           ...formData,
           order_id: data.data.order_id,

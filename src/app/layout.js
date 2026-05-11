@@ -2,6 +2,7 @@ import { Inter, Roboto } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
+import Chatbot from "@/components/Chatbot/Chatbot";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -29,6 +30,8 @@ export default function RootLayout({ children }) {
         <Navbar />
         {children}
         <Footer />
+        {/* chatting feature script */}
+        <Chatbot />
       </body>
     </html>
   );

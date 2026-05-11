@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-// import { ECOM_BASE_URL } from "../../../../config";
+import { ECOM_BASE_URL } from "@/config";
 import EcomPricingCard3 from "../../../Cards/EcomPricingCard3";
 import spumpLogo from "../../../../assets/logo/spump_logo.png";
 import Image from "next/image";
@@ -66,12 +66,12 @@ const currencies = [
 const NewPricing = ({ pricingSection }) => {
   const [selectedDuration, setSelectedDuration] = useState(1);
   const [packages, setPackages] = useState([]);
-  const ECOM_BASE_URL = "";
-
   useEffect(() => {
     const fetchPackagesByDuration = async (duration) => {
       try {
-        const res = await fetch(`${ECOM_BASE_URL}/package/get-all/${duration}`);
+        const res = await fetch(
+          `${ECOM_BASE_URL}/api/v1/package/get-all/${duration}`,
+        );
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
         setPackages(data.data);
@@ -81,7 +81,7 @@ const NewPricing = ({ pricingSection }) => {
     };
     fetchPackagesByDuration(selectedDuration);
   }, [selectedDuration]);
-
+  // console.log(packages);
   return (
     <section ref={pricingSection} className="py-10 md:py-20">
       <Container>

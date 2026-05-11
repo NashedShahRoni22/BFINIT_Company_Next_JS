@@ -111,7 +111,6 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({ formData });
     setLoader(true);
     if (parseInt(formData.captchaInput, 10) !== captchaAnswer) {
       setInvalidCaptcha(true);
@@ -173,7 +172,6 @@ export default function Contact() {
     } catch (error) {
       // Notify user if an error occurs during submission
       alert("Oops! Something went wrong. Please try again later.");
-      // You can console.log the error to know what went wrong
       setLoader(false);
       console.log(error);
     }

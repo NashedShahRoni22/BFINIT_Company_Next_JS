@@ -5,15 +5,9 @@ import { menuItems } from "../../data/menuItems";
 import Container from "./Container";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ChevronDown,
-  ChevronRight,
-  ChevronUp,
-  Menu,
-  MoveUpRight,
-  X,
-} from "lucide-react";
+import { ChevronDown, ChevronRight, ChevronUp, Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { LuArrowUpRight } from "react-icons/lu";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -115,8 +109,6 @@ const Navbar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  console.log("isScrolled : ", isScrolled);
-  console.log("Not Home : ", !isHome);
 
   return (
     <nav
@@ -237,7 +229,7 @@ const Navbar = () => {
             href="/contact"
             className={`group hidden h-fit items-center gap-2.5 rounded-full border px-4 py-2 font-medium shadow transition-all duration-300 ease-linear lg:flex ${isScrolled || !isHome ? "border-primary/25 bg-[#242D2B] text-white hover:bg-[#090B0B]" : "border-transparent bg-brand text-white hover:bg-brand/90"}`}>
             Contact{" "}
-            <MoveUpRight className="duration-300 ease-linear group-hover:rotate-45" />
+            <LuArrowUpRight className="duration-300 ease-linear group-hover:rotate-45" />
           </Link>
         </section>
       </Container>

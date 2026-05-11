@@ -7,7 +7,7 @@ import {
   Users,
   Sparkle,
 } from "lucide-react";
-import Container from "../../../shared/Container";
+import Container from "@/components/shared/Container";
 
 const features = [
   {

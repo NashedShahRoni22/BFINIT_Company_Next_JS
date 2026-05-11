@@ -1,9 +1,9 @@
 import Image from "next/image";
-import img1 from "../../../../assets/home-3/slider-1.png";
-import img2 from "../../../../assets/home-3/slider-2.png";
-import img3 from "../../../../assets/home-3/slider-3.png";
-import img4 from "../../../../assets/home-3/slider-4.png";
-import img5 from "../../../../assets/home-3/slider-5.png";
+import img1 from "@/assets/home-3/slider-1.png";
+import img2 from "@/assets/home-3/slider-2.png";
+import img3 from "@/assets/home-3/slider-3.png";
+import img4 from "@/assets/home-3/slider-4.png";
+import img5 from "@/assets/home-3/slider-5.png";
 import Container from "@/components/shared/Container";
 
 const showcaseItems = [

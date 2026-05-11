@@ -15,8 +15,10 @@ const EcomPricingCard3 = ({ pack, selectedDuration }) => {
     product_limit,
     max_storage,
   } = pack;
+  console.log(pricing);
 
-  const { selected_month_price } = pricing;
+  const { selected_month_price } = pricing || 0;
+  const { total_base_price } = pricing || 0;
 
   const [showFullDesc, setShowFullDesc] = useState(false);
   const isYearSelected = selectedDuration === 12;
@@ -36,25 +38,25 @@ const EcomPricingCard3 = ({ pack, selectedDuration }) => {
 
   return (
     <div
-      className={`h-fit overflow-hidden rounded-3xl ${badge ? "bg-primary" : ""}`}>
+      className={`h-fit overflow-hidden rounded-3xl ${badge ? "bg-brand" : ""}`}>
       <div
-        className={`flex h-7 items-center justify-center text-sm font-semibold text-white ${badge ? "bg-primary" : "bg-transparent"}`}>
+        className={`flex h-7 items-center justify-center text-sm font-semibold text-white ${badge ? "bg-brand" : "bg-transparent"}`}>
         {badge && <p>{badge}</p>}
       </div>
 
       <div
-        className={`rounded-3xl border bg-white ${badge ? "border-primary" : "border-softGray"}`}>
+        className={`rounded-3xl border bg-white ${badge ? "border-brand" : "border-softGray"}`}>
         <div>
           <div className="p-5">
             {/* Plan label + name */}
             {package_type_label && (
-              <p className="mb-1 text-[10.5px] font-bold uppercase tracking-widest text-primary">
+              <p className="mb-1 text-[10.5px] font-bold uppercase tracking-widest text-brand">
                 {package_type_label}
               </p>
             )}
 
             {!package_type_label && badge && (
-              <p className="mb-1 text-[10.5px] font-bold uppercase tracking-widest text-primary">
+              <p className="mb-1 text-[10.5px] font-bold uppercase tracking-widest text-brand">
                 {badge}
               </p>
             )}
@@ -75,7 +77,7 @@ const EcomPricingCard3 = ({ pack, selectedDuration }) => {
                 €
               </span>
               <span className="text-[42px] font-extrabold leading-none text-dark">
-                {formatPrice(selected_month_price)}
+                {formatPrice(total_base_price)}
               </span>
               <span className="text-zinc-400 mb-1.5 ml-1 text-xs">
                 {isYearSelected ? "/yr" : "/mo"}
@@ -88,25 +90,23 @@ const EcomPricingCard3 = ({ pack, selectedDuration }) => {
             <button
               className={`mt-5 w-full rounded-xl py-2.5 text-sm font-bold transition-colors duration-150 ${
                 badge
-                  ? "bg-primary text-white hover:bg-primary/90"
-                  : "border-[1.5px] border-primary bg-white text-primary hover:bg-primary/5"
+                  ? "bg-brand text-white hover:bg-brand/90"
+                  : "border-[1.5px] border-brand bg-white text-brand hover:bg-brand/5"
               }`}>
               Get Started
             </button>
 
             <p className="mt-2 text-[11px] text-gray-600">
               Or pay with{" "}
-              <span className="cursor-pointer font-semibold text-primary hover:underline">
+              <span className="cursor-pointer font-semibold text-brand hover:underline">
                 SPUMP
               </span>{" "}
               or{" "}
-              <span className="cursor-pointer font-semibold text-primary hover:underline">
+              <span className="cursor-pointer font-semibold text-brand hover:underline">
                 USFF
               </span>{" "}
               and save{" "}
-              <span className="font-semibold text-primary">
-                €{spumpSavings}
-              </span>
+              <span className="font-semibold text-brand">€{spumpSavings}</span>
             </p>
 
             <hr className="my-4 border-softGray" />
@@ -136,7 +136,7 @@ const EcomPricingCard3 = ({ pack, selectedDuration }) => {
             <ul className="space-y-2">
               {descArr?.map((desc, i) => (
                 <li key={i} className="flex items-start gap-2.5">
-                  <div className="mt-1.25 size-1.25 shrink-0 rounded-full bg-primary" />
+                  <div className="mt-1.25 size-1.25 shrink-0 rounded-full bg-brand" />
                   <span className="text-xs leading-relaxed text-gray-600">
                     {desc}
                   </span>
@@ -148,7 +148,7 @@ const EcomPricingCard3 = ({ pack, selectedDuration }) => {
             {hasMore && (
               <button
                 onClick={() => setShowFullDesc((prev) => !prev)}
-                className="mt-3 flex w-full items-center gap-1.5 py-1.5 text-[11px] font-semibold text-gray-600 transition-colors hover:text-primary">
+                className="mt-3 flex w-full items-center gap-1.5 py-1.5 text-[11px] font-semibold text-gray-600 transition-colors hover:text-brand">
                 {showFullDesc ? (
                   <>
                     Show less <ChevronUp size={12} strokeWidth={2} />
