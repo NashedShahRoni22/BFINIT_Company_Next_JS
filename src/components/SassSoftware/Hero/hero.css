@@ -1,0 +1,23 @@
+#sass-hero .swiper-pagination-bullet {
+  z-index: 100;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  #sass-hero
+    .swiper-pagination.swiper-pagination-bullets.swiper-pagination-horizontal {
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  #sass-hero .swiper-pagination-bullets,
+  #sass-hero .swiper-pagination-bullets.swiper-pagination-horizontal {
+    bottom: auto;
+    top: 40%;
+    left: 5px;
+    width: 100%;
+    transform: translate(0px, 40%);
+  }
+}
