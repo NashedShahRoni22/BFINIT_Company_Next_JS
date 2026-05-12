@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import Chatbot from "@/components/Chatbot/Chatbot";
+import AuthProvider from "@/provider/AuthProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -27,13 +28,15 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${inter.variable} ${roboto.variable} h-full antialiased`}
       data-scroll-behavior="smooth">
-      <body className="min-h-full flex flex-col">
-        <Navbar />
-        {children}
-        <Footer />
-        {/* chatting feature script */}
-        <Chatbot />
-      </body>
+      <AuthProvider>
+        <body className="min-h-full flex flex-col">
+          <Navbar />
+          {children}
+          <Footer />
+          {/* chatting feature script */}
+          <Chatbot />
+        </body>
+      </AuthProvider>
     </html>
   );
 }
