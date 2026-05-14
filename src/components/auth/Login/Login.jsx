@@ -18,8 +18,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   const { saveAuth } = useAuth();
-  //   const navigate = useRouter();
-  //   const location = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -68,11 +66,11 @@ export default function Login() {
       return;
     }
 
+    console.log("login user data", data);
     saveAuth(data);
 
-    // navigate(location.state?.from?.pathname || "/");
-    const destination = searchParams.get("from") || "/";
-    router.push(destination);
+    const redirect = searchParams.get("redirect") || "/";
+    router.push(redirect);
   };
 
   return (
@@ -83,9 +81,7 @@ export default function Login() {
           <div className="rounded-2xl border border-[#e4e4e7] bg-white px-8 py-10 shadow-sm">
             {/* Header */}
             <div className="mb-8 text-center">
-              <h1
-                className="text-2xl font-semibold tracking-tight text-[#09090b]"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              <h1 className="text-2xl font-bold tracking-tight font-inter text-[#09090b]">
                 Welcome back
               </h1>
               <p className="mt-1.5 text-sm text-[#71717a]">
@@ -109,7 +105,7 @@ export default function Login() {
                   placeholder="alice@example.com"
                   value={form.email}
                   onChange={handleChange}
-                  className={`h-10 w-full rounded-lg border bg-white px-3 text-sm text-[#09090b] placeholder-[#a1a1aa] outline-none transition-all duration-150 focus:ring-2 focus:ring-primary focus:ring-offset-1 ${
+                  className={`h-10 w-full rounded-lg border bg-white px-3 text-sm text-[#09090b] placeholder-[#a1a1aa] outline-none transition-all duration-150 focus:ring-2 focus:ring-brand focus:ring-offset-1 ${
                     errors.email
                       ? "border-[#ef4444] focus:ring-[#ef4444]"
                       : "border-[#e4e4e7] hover:border-[#a1a1aa]"
@@ -136,7 +132,7 @@ export default function Login() {
                     placeholder="••••••••"
                     value={form.password}
                     onChange={handleChange}
-                    className={`h-10 w-full rounded-lg border bg-white px-3 pr-10 text-sm text-[#09090b] placeholder-[#a1a1aa] outline-none transition-all duration-150 focus:ring-2 focus:ring-primary focus:ring-offset-1 ${
+                    className={`h-10 w-full rounded-lg border bg-white px-3 pr-10 text-sm text-[#09090b] placeholder-[#a1a1aa] outline-none transition-all duration-150 focus:ring-2 focus:ring-brand focus:ring-offset-1 ${
                       errors.password
                         ? "border-[#ef4444] focus:ring-[#ef4444]"
                         : "border-[#e4e4e7] hover:border-[#a1a1aa]"
@@ -164,7 +160,7 @@ export default function Login() {
               <div className="-mt-2 flex justify-end">
                 <Link
                   href="/forgot-password"
-                  className="text-xs text-primary hover:underline">
+                  className="text-xs text-brand hover:underline">
                   Forgot password?
                 </Link>
               </div>
@@ -180,7 +176,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={loading}
-                className="h-10 w-full rounded-lg bg-primary text-sm font-medium text-white transition-all duration-150 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60">
+                className="h-10 w-full rounded-lg bg-brand text-sm font-medium text-white transition-all duration-150 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60">
                 {loading ? "Signing in…" : "Sign in"}
               </button>
             </form>
@@ -197,7 +193,7 @@ export default function Login() {
               Don&apos;t have an account?{" "}
               <Link
                 href="/register"
-                className="font-medium text-primary hover:underline">
+                className="font-medium text-brand hover:underline">
                 Sign up
               </Link>
             </p>

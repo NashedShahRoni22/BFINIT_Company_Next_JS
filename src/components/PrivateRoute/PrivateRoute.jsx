@@ -3,10 +3,12 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Loader from "../shared/Loader";
+import useAuth from "@/hooks/useAuth";
 
 export default function PrivateRoute({ children }) {
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
+  const { token } = useAuth();
 
   const router = useRouter();
 
@@ -24,7 +26,7 @@ export default function PrivateRoute({ children }) {
 
   if (loading) return <Loader />;
 
-  if (!authenticated) return null;
+  if (!authenticated || !token) return null;
 
   return children;
 }

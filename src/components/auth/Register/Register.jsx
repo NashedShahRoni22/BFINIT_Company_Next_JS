@@ -224,7 +224,7 @@ export default function Register() {
   // ─── Styles ────────────────────────────────────────────────────────────────
 
   const inputClass = (field) =>
-    `h-10 w-full rounded-lg border bg-white px-3 text-sm text-[#09090b] placeholder-[#a1a1aa] outline-none transition-all duration-150 focus:ring-2 focus:ring-primary focus:ring-offset-1 ${
+    `h-10 w-full rounded-lg border bg-white px-3 text-sm text-[#09090b] placeholder-[#a1a1aa] outline-none transition-all duration-150 focus:ring-2 focus:ring-brand focus:ring-offset-1 ${
       errors[field]
         ? "border-[#ef4444] focus:ring-[#ef4444]"
         : "border-[#e4e4e7] hover:border-[#a1a1aa]"
@@ -243,7 +243,7 @@ export default function Register() {
                 <div className="mb-8 text-center">
                   <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#f0fdf4]">
                     <svg
-                      className="h-6 w-6 text-green-500"
+                      className="h-6 w-6 text-brand"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -289,7 +289,7 @@ export default function Register() {
                           value={digit}
                           onChange={(e) => handleOtpChange(i, e.target.value)}
                           onKeyDown={(e) => handleOtpKeyDown(i, e)}
-                          className={`h-12 w-full rounded-lg border text-center text-lg font-semibold text-[#09090b] outline-none transition-all duration-150 focus:ring-2 focus:ring-primary focus:ring-offset-1 ${
+                          className={`h-12 w-full rounded-lg border text-center text-lg font-semibold text-[#09090b] outline-none transition-all duration-150 focus:ring-2 focus:ring-brand focus:ring-offset-1 ${
                             errors.otp
                               ? "border-[#ef4444] focus:ring-[#ef4444]"
                               : "border-[#e4e4e7] hover:border-[#a1a1aa]"
@@ -311,7 +311,7 @@ export default function Register() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="mt-1 h-10 w-full rounded-lg bg-primary text-sm font-medium text-white transition-all duration-150 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60">
+                    className="mt-1 h-10 w-full rounded-lg bg-brand text-sm font-medium text-white transition-all duration-150 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60">
                     {loading ? "Verifying…" : "Verify & Create Account"}
                   </button>
 
@@ -327,9 +327,7 @@ export default function Register() {
               /* ── Registration Step ── */
               <>
                 <div className="mb-8 text-center">
-                  <h1
-                    className="text-2xl font-semibold tracking-tight text-[#09090b]"
-                    style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                  <h1 className="text-2xl font-bold tracking-tight text-[#09090b] font-inter">
                     Create an account
                   </h1>
                   <p className="mt-1.5 text-sm text-[#71717a]">
@@ -489,7 +487,7 @@ export default function Register() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="mt-1 h-10 w-full rounded-lg bg-primary text-sm font-medium text-white transition-all duration-150 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60">
+                    className="mt-1 h-10 w-full rounded-lg bg-brand text-sm font-medium text-white transition-all duration-150 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60">
                     {loading ? "Sending OTP…" : "Continue"}
                   </button>
                 </form>
@@ -504,7 +502,7 @@ export default function Register() {
                   Already have an account?{" "}
                   <Link
                     href="/login"
-                    className="font-medium text-primary hover:underline">
+                    className="font-medium text-brand hover:underline">
                     Sign in
                   </Link>
                 </p>

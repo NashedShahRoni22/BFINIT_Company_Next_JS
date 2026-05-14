@@ -18,45 +18,45 @@ const currencies = [
       </span>
     ),
   },
-  {
-    id: "spump",
-    label: "SPUMP",
-    icon: (
-      <Image
-        width={1000}
-        height={1000}
-        src="https://scottypumpkin.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhero.ecd1dcc2.png&w=640&q=75"
-        alt=""
-        className="h-4 w-4 rounded-full"
-      />
-    ),
-  },
-  {
-    id: "usff",
-    label: "USFF",
-    icon: (
-      <Image
-        width={1000}
-        height={1000}
-        src="https://usfranc.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.bdd0bb3c.webp&w=640&q=100"
-        alt=""
-        className="h-4 w-4 rounded-full"
-      />
-    ),
-  },
-  {
-    id: "usdc",
-    label: "USDC",
-    icon: (
-      <Image
-        width={1000}
-        height={1000}
-        src="https://assets.coingecko.com/coins/images/6319/small/usdc.png"
-        alt=""
-        className="h-4 w-4 rounded-full"
-      />
-    ),
-  },
+  // {
+  //   id: "spump",
+  //   label: "SPUMP",
+  //   icon: (
+  //     <Image
+  //       width={1000}
+  //       height={1000}
+  //       src="https://scottypumpkin.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhero.ecd1dcc2.png&w=640&q=75"
+  //       alt=""
+  //       className="h-4 w-4 rounded-full"
+  //     />
+  //   ),
+  // },
+  // {
+  //   id: "usff",
+  //   label: "USFF",
+  //   icon: (
+  //     <Image
+  //       width={1000}
+  //       height={1000}
+  //       src="https://usfranc.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.bdd0bb3c.webp&w=640&q=100"
+  //       alt=""
+  //       className="h-4 w-4 rounded-full"
+  //     />
+  //   ),
+  // },
+  // {
+  //   id: "usdc",
+  //   label: "USDC",
+  //   icon: (
+  //     <Image
+  //       width={1000}
+  //       height={1000}
+  //       src="https://assets.coingecko.com/coins/images/6319/small/usdc.png"
+  //       alt=""
+  //       className="h-4 w-4 rounded-full"
+  //     />
+  //   ),
+  // },
 ];
 
 export default function Checkout() {

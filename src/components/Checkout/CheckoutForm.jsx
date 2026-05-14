@@ -16,7 +16,7 @@ export default function CheckoutForm({ details, currencies, bankInfo }) {
   const navigate = useRouter();
   const { token, loading } = useAuth();
 
-  const [paymentMethod, setPaymentMethod] = useState("stripe");
+  const [paymentMethod, setPaymentMethod] = useState("bank");
   const [slipFile, setSlipFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currencyId, setCurrencyId] = useState(currencies[0]?.id ?? "eur");
@@ -123,9 +123,12 @@ export default function CheckoutForm({ details, currencies, bankInfo }) {
             console.error("No client_secret in response");
           }
         } else if (paymentMethod === "bank") {
-          const orderId = data.data.packageOrder?.id;
-          const invoiceId = data.data.invoice?.id;
-          navigate.push(`/order-confirmation/${orderId}/${invoiceId}`);
+          // const orderId = data.data.packageOrder?.id;
+          // const invoiceId = data.data.invoice?.id;
+          console.log(data.data.invoice.invoice_number);
+          const invoice_number = data.data.invoice.invoice_number;
+          // navigate.push(`/order-confirmation/${orderId}/${invoiceId}`);
+          navigate.push(`/order-confirmation/${invoice_number}`);
         }
       } else {
         console.error("Order failed:", data);
@@ -138,9 +141,12 @@ export default function CheckoutForm({ details, currencies, bankInfo }) {
   };
 
   const handleStripeSuccess = () => {
-    const orderId = pendingOrderData?.packageOrder?.id;
-    const invoiceId = pendingOrderData?.invoice?.id;
-    navigate.push(`/order-confirmation/${orderId}/${invoiceId}`);
+    // const orderId = pendingOrderData?.packageOrder?.id;
+    // const invoiceId = pendingOrderData?.invoice?.id;
+    console.log(pendingOrderData.invoice.invoice_number);
+    const invoice_number = pendingOrderData.invoice.invoice_number;
+    // navigate.push(`/order-confirmation/${orderId}/${invoiceId}`);
+    navigate.push(`/order-confirmation/${invoice_number}`);
   };
 
   const handleBack = () => {

@@ -7,7 +7,6 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
-
   // Rehydrate from localStorage on first load
   useEffect(() => {
     try {
@@ -26,7 +25,8 @@ export default function AuthProvider({ children }) {
   }, []);
 
   const saveAuth = useCallback((responseData) => {
-    const { user, token } = responseData.data;
+    const { token } = responseData;
+    const user = responseData?.data;
     setUser(user);
     setToken(token);
     localStorage.setItem("token", token);

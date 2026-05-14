@@ -32,8 +32,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
-import { Badge } from "../ui/badge";
-import OrderTableSkeleton from "../skeletons/OrderTableSkeleton/OrderTableSkeleton";
+import { Badge } from "../../ui/badge";
+import OrderTableSkeleton from "../../skeletons/OrderTableSkeleton/OrderTableSkeleton";
+import { useRouter } from "next/navigation";
+import Container from "@/components/shared/Container";
 
 function formatDate(dateStr) {
   if (!dateStr) return "—";
@@ -244,7 +246,7 @@ function OrderCard({ order }) {
   const pkg = order.package;
   const period = order.subscriptionPeriod;
   const upgrade = order.packageUpgrades?.[0];
-  console.log(order);
+  // console.log(order);
   const invoices = [
     {
       invoice: "",
@@ -406,8 +408,12 @@ export default function MyOrders() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [meta, setMeta] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
+    if (!user) {
+      return router.push("/login");
+    }
     async function fetchOrders() {
       try {
         setLoading(true);
@@ -435,201 +441,158 @@ export default function MyOrders() {
       }
     }
     fetchOrders();
-  }, [user?.id]);
-  console.log(orders);
+  }, [token, router, user]);
+  // console.log(orders);
 
   return (
-    <div
-      className="min-h-screen py-20 font-sora"
-      style={{ background: "#f6f8fb" }}>
-      <style>{`
+    <Container>
+      <div className="min-h-screen py-20 font-sora">
+        <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Sora:wght@300;400;500;600;700&display=swap');
         .animate-fade-in { animation: fadeIn 0.25s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
       `}</style>
 
-      <div className="mx-auto max-w-4xl px-4 py-10">
-        {/* Page Header */}
-        <div className="">
-          <h1 className="font-montserrat text-3xl font-extrabold leading-tight text-gray-900">
-            My Orders
-          </h1>
-          {meta && !loading && (
-            <p className="mt-1 font-sora text-sm text-gray-400">
-              {meta.total} order{meta.total !== 1 ? "s" : ""} found
-            </p>
-          )}
-        </div>
-
-        {/* Content */}
-        {loading && (
-          <div className="space-y-4">
-            {/* <SkeletonCard /> */}
-            {/* <SkeletonCard /> */}
-            <OrderTableSkeleton />
-            <OrderTableSkeleton />
-          </div>
-        )}
-
-        {error && (
-          <div
-            className="flex items-start gap-4 rounded-2xl p-6"
-            style={{ background: "#fff5f5", border: "1.5px solid #fecaca" }}>
-            <XCircle
-              size={22}
-              color="#ef4444"
-              strokeWidth={2}
-              className="mt-0.5 shrink-0"
-            />
-            <div>
-              <p className="mb-1 font-montserrat font-bold text-red-700">
-                Failed to load orders
+        <div className="py-10">
+          {/* Page Header */}
+          <div className="">
+            <h1 className="font-montserrat text-3xl font-extrabold leading-tight text-gray-900">
+              My Orders
+            </h1>
+            {meta && !loading && (
+              <p className="mt-1 font-sora text-sm text-gray-400">
+                {meta.total} order{meta.total !== 1 ? "s" : ""} found
               </p>
-              <p className="font-sora text-sm text-red-500">{error}</p>
+            )}
+          </div>
+
+          {/* Content */}
+          {loading && (
+            <div className="space-y-4">
+              <OrderTableSkeleton />
+              <OrderTableSkeleton />
             </div>
-          </div>
-        )}
+          )}
 
-        {!loading && !error && orders.length === 0 && (
-          <div
-            className="rounded-2xl p-12 text-center"
-            style={{ background: "white", border: "1.5px solid #e8edf2" }}>
-            <Package
-              size={40}
-              className="mx-auto mb-4 text-gray-300"
-              strokeWidth={1.5}
-            />
-            <p className="font-montserrat text-lg font-bold text-gray-500">
-              No orders yet
-            </p>
-            <p className="mt-1 font-sora text-sm text-gray-400">
-              Your subscription orders will appear here.
-            </p>
-          </div>
-        )}
+          {error && (
+            <div
+              className="flex items-start gap-4 rounded-2xl p-6"
+              style={{ background: "#fff5f5", border: "1.5px solid #fecaca" }}>
+              <XCircle
+                size={22}
+                color="#ef4444"
+                strokeWidth={2}
+                className="mt-0.5 shrink-0"
+              />
+              <div>
+                <p className="mb-1 font-montserrat font-bold text-red-700">
+                  Failed to load orders
+                </p>
+                <p className="font-sora text-sm text-red-500">{error}</p>
+              </div>
+            </div>
+          )}
 
-        {!loading && !error && orders.length > 0 && (
-          <div className="space-y-4">
-            {/* <Table className="w-full border border-gray-200 rounded-lg overflow-hidden p-3 border-separate border-spacing-y-4">
-              <TableHeader className={"bg-brand/20"}>
-                <TableRow className={"border-b border-gray-200"}>
-                  <TableHead className="">#</TableHead>
-                  <TableHead className="">Package Name</TableHead>
-                  <TableHead className="">Status</TableHead>
-                  <TableHead className="">Price</TableHead>
-                  <TableHead className="">Starts</TableHead>
-                  <TableHead className="">Invoice</TableHead>
-                  <TableHead className="">Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody className={"border"}>
-                {orders.map((order, idx) => (
-                  <TableRow
-                    key={idx}
-                    className={"border-b border-gray-200 last:border-b-0"}>
-                    <TableCell>{idx + 1}</TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {order.package.package_type}
-                    </TableCell>
-                    <TableCell>
-                      {" "}
-                      <Badge className={"bg-brand/20 text-gray-900"}>
-                        {order.packageInvoices[0].status}
-                      </Badge>{" "}
-                    </TableCell>
-                    <TableCell className={"text-muted-foreground"}>
-                      <span className="font-inter font-bold text-base">
-                        {" "}
-                        {order.packageInvoices[0].payment_amount}{" "}
-                      </span>
-                      <span>/</span>
-                      <span className="text-sm">
-                        {" "}
-                        {order.subscriptionPeriod.duration}
-                      </span>
-                    </TableCell>
-                    <TableCell>{formatDate(order.created_at)}</TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {order.packageInvoices[0].invoice_number}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      <Link
-                        href={"/"}
-                        className="text-xs cursor-pointer text-muted-foreground">
-                        View Details
-                      </Link>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table> */}
-            <div className="w-full border border-gray-200 rounded-xl">
-              <Table className="w-full border-separate border-spacing-y-4">
-                <TableHeader>
-                  <TableRow className="bg-brand/20">
-                    <TableHead>#</TableHead>
-                    <TableHead>Package Name</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Price</TableHead>
-                    <TableHead>Starts</TableHead>
-                    <TableHead>Invoice</TableHead>
-                    <TableHead>Action</TableHead>
-                  </TableRow>
-                </TableHeader>
+          {!loading && !error && orders.length === 0 && (
+            <div
+              className="rounded-2xl p-12 text-center"
+              style={{ background: "white", border: "1.5px solid #e8edf2" }}>
+              <Package
+                size={40}
+                className="mx-auto mb-4 text-gray-300"
+                strokeWidth={1.5}
+              />
+              <p className="font-montserrat text-lg font-bold text-gray-500">
+                No orders yet
+              </p>
+              <p className="mt-1 font-sora text-sm text-gray-400">
+                Your subscription orders will appear here.
+              </p>
+            </div>
+          )}
 
-                <TableBody>
-                  {orders.map((order, idx) => (
-                    <TableRow
-                      key={idx}
-                      className="border border-gray-200 rounded-lg">
-                      <TableCell className="rounded-l-lg">{idx + 1}</TableCell>
-
-                      <TableCell className="text-muted-foreground">
-                        {order.package.package_type}
-                      </TableCell>
-
-                      <TableCell>
-                        <Badge className="bg-brand/20 text-gray-700 capitalize">
-                          {order.packageInvoices[0].status}
-                        </Badge>
-                      </TableCell>
-
-                      <TableCell className="text-muted-foreground">
-                        <span className="font-inter font-bold text-base">
-                          € {order.packageInvoices[0].payment_amount}
-                        </span>
-                        <span>/</span>
-                        <span className="text-sm">
-                          {order.subscriptionPeriod.duration}mo
-                        </span>
-                      </TableCell>
-
-                      <TableCell className={"text-muted-foreground"}>
-                        {formatDate(order.created_at)}
-                      </TableCell>
-
-                      <TableCell className="text-muted-foreground">
-                        {order.packageInvoices[0].invoice_number}
-                      </TableCell>
-
-                      <TableCell className="rounded-r-lg">
-                        <Link
-                          href="/"
-                          className="text-sm cursor-pointer text-gray-700 hover:text-black transition">
-                          View Details
-                        </Link>
-                      </TableCell>
+          {!loading && !error && orders.length > 0 && (
+            <div className="space-y-4">
+              <div className="w-full border border-gray-200 rounded-xl">
+                <Table className="w-full border-separate border-spacing-y-4">
+                  <TableHeader>
+                    <TableRow className="bg-brand/20">
+                      <TableHead>#</TableHead>
+                      <TableHead>Package Name</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Price</TableHead>
+                      <TableHead>Starts</TableHead>
+                      <TableHead>Invoice</TableHead>
+                      <TableHead>Method</TableHead>
+                      <TableHead>Action</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-            {/* {orders.map((order) => (
+                  </TableHeader>
+
+                  <TableBody>
+                    {orders.map((order, idx) => (
+                      <TableRow
+                        key={idx}
+                        className="border-b border-b-gray-900 rounded-lg">
+                        <TableCell className="rounded-l-lg">
+                          {idx + 1}
+                        </TableCell>
+
+                        <TableCell className="text-muted-foreground">
+                          {order.package.package_type}
+                        </TableCell>
+
+                        <TableCell>
+                          <Badge className="bg-brand/20 text-gray-700 capitalize">
+                            {console.log(order.packageInvoice)}
+                            {order.packageInvoice?.status}
+                          </Badge>
+                        </TableCell>
+
+                        <TableCell className="text-muted-foreground">
+                          <span className="font-inter font-bold text-base">
+                            {order.packageInvoice?.payment_amount}
+                          </span>
+                          <span>/</span>
+                          <span className="text-sm">
+                            {order.subscriptionPeriod.duration}mo
+                          </span>
+                        </TableCell>
+
+                        <TableCell className={"text-muted-foreground"}>
+                          {formatDate(order.created_at)}
+                        </TableCell>
+
+                        <TableCell className="text-muted-foreground">
+                          {order.packageInvoice.invoice_number}
+                        </TableCell>
+
+                        <TableCell className="text-muted-foreground capitalize">
+                          {order.packageInvoice.payment_method}
+                        </TableCell>
+
+                        <TableCell className="rounded-r-lg">
+                          <button
+                            className="bg-brand rounded-sm px-2 py-1.5 text-white"
+                            type="button">
+                            <Link
+                              href={`/my-orders/${order.packageInvoice.invoice_number}`}
+                              className="text-sm cursor-pointer  transition">
+                              View Details
+                            </Link>
+                          </button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+              {/* {orders.map((order) => (
               <OrderCard key={order.id} order={order} />
             ))} */}
-          </div>
-        )}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </Container>
   );
 }

@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
           {children}
           <Footer />
           {/* chatting feature script */}
-          <Chatbot />
+          {/* <Chatbot /> */}
         </body>
       </AuthProvider>
     </html>

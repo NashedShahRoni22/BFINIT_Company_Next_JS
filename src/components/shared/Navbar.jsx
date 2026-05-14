@@ -126,8 +126,6 @@ export default function Navbar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  console.log("is Home: ", !isHome);
-  console.log("is Scrolled: ", isScrolled);
   return (
     <nav
       className={`fixed z-50 w-full border-b border-brand font-roboto ${isScrolled || !isHome ? "top-0 bg-white" : "top-0 bg-transparent"}`}>
