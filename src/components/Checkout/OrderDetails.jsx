@@ -108,7 +108,7 @@ export default function OrderDetails({
   };
 
   return (
-    <div className="sticky top-20 h-fit overflow-hidden rounded-xl border border-[#D6E4F0] bg-white">
+    <div className="md:sticky w-full top-20 h-fit overflow-hidden rounded-xl border border-[#D6E4F0] bg-white">
       {/* Header */}
       <div className="relative overflow-hidden bg-[#186BB5] px-5 pb-6 pt-5">
         <div className="absolute -right-6 -top-6 h-28 w-28 rounded-full bg-white/5" />

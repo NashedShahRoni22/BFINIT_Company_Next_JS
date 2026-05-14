@@ -66,7 +66,6 @@ export default function Login() {
       return;
     }
 
-    console.log("login user data", data);
     saveAuth(data);
 
     const redirect = searchParams.get("redirect") || "/";

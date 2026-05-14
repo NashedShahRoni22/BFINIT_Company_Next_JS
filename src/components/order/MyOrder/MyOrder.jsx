@@ -246,7 +246,6 @@ function OrderCard({ order }) {
   const pkg = order.package;
   const period = order.subscriptionPeriod;
   const upgrade = order.packageUpgrades?.[0];
-  // console.log(order);
   const invoices = [
     {
       invoice: "",
@@ -442,11 +441,10 @@ export default function MyOrders() {
     }
     fetchOrders();
   }, [token, router, user]);
-  // console.log(orders);
 
   return (
     <Container>
-      <div className="min-h-screen py-20 font-sora">
+      <div className="min-h-screen py-16 font-sora">
         <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Sora:wght@300;400;500;600;700&display=swap');
         .animate-fade-in { animation: fadeIn 0.25s ease; }
@@ -455,7 +453,7 @@ export default function MyOrders() {
 
         <div className="py-10">
           {/* Page Header */}
-          <div className="">
+          <div className="pb-4">
             <h1 className="font-montserrat text-3xl font-extrabold leading-tight text-gray-900">
               My Orders
             </h1>
@@ -469,7 +467,6 @@ export default function MyOrders() {
           {/* Content */}
           {loading && (
             <div className="space-y-4">
-              <OrderTableSkeleton />
               <OrderTableSkeleton />
             </div>
           )}
@@ -514,16 +511,16 @@ export default function MyOrders() {
           {!loading && !error && orders.length > 0 && (
             <div className="space-y-4">
               <div className="w-full border border-gray-200 rounded-xl">
-                <Table className="w-full border-separate border-spacing-y-4">
-                  <TableHeader>
-                    <TableRow className="bg-brand/20">
-                      <TableHead>#</TableHead>
+                <Table className="w-full border-separate border-spacing-y-px">
+                  <TableHeader className="">
+                    <TableRow className="bg-brand/20 rounded-xl">
+                      <TableHead>Invoice</TableHead>
                       <TableHead>Package Name</TableHead>
-                      <TableHead>Status</TableHead>
                       <TableHead>Price</TableHead>
                       <TableHead>Starts</TableHead>
                       <TableHead>Invoice</TableHead>
                       <TableHead>Method</TableHead>
+                      <TableHead>Status</TableHead>
                       <TableHead>Action</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -533,19 +530,12 @@ export default function MyOrders() {
                       <TableRow
                         key={idx}
                         className="border-b border-b-gray-900 rounded-lg">
-                        <TableCell className="rounded-l-lg">
-                          {idx + 1}
+                        <TableCell className="rounded-l-lg text-muted-foreground">
+                          {order.packageInvoice.invoice_number}
                         </TableCell>
 
                         <TableCell className="text-muted-foreground">
                           {order.package.package_type}
-                        </TableCell>
-
-                        <TableCell>
-                          <Badge className="bg-brand/20 text-gray-700 capitalize">
-                            {console.log(order.packageInvoice)}
-                            {order.packageInvoice?.status}
-                          </Badge>
                         </TableCell>
 
                         <TableCell className="text-muted-foreground">
@@ -568,6 +558,12 @@ export default function MyOrders() {
 
                         <TableCell className="text-muted-foreground capitalize">
                           {order.packageInvoice.payment_method}
+                        </TableCell>
+
+                        <TableCell>
+                          <Badge className="bg-brand/20 text-gray-700 capitalize">
+                            {order.packageInvoice?.status}
+                          </Badge>
                         </TableCell>
 
                         <TableCell className="rounded-r-lg">

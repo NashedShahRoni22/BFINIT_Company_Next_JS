@@ -192,7 +192,7 @@ export default function CheckoutForm({ details, currencies, bankInfo }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="grid grid-cols-1 gap-8 py-16 md:grid-cols-2">
+      <div className="flex flex-col-reverse md:flex-row gap-8 py-16">
         <PersonalInfo
           paymentMethod={paymentMethod}
           formData={formData}

@@ -55,7 +55,7 @@ export default function PersonalInfo({
   const labelClass = "text-xs font-semibold text-gray-700 tracking-wide";
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full">
       {/* Title */}
       <div>
         <h3 className="text-xl font-bold text-gray-900">Payment Details</h3>
