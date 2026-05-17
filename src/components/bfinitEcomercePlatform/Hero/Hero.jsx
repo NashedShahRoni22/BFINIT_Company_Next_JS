@@ -10,14 +10,13 @@ const TRUST_ITEMS = [
     label: "Pre-built Templates",
   },
   { icon: <LuCreditCard className="size-3.5" />, label: "Payment Integration" },
-  //   { icon: <LuBarChart2 className="size-3.5" />, label: "Market Insights" },
   { icon: <LuSearch className="size-3.5" />, label: "SEO Control" },
 ];
 
 export default function Hero({ handleScrollToSection }) {
   return (
     <section className="relative w-full overflow-hidden">
-      <div className="mx-auto max-w-7xl py-14 sm:px-6 md:py-20 lg:px-8">
+      <div className="py-14 md:py-20">
         <div className="flex flex-col-reverse items-center gap-10 md:flex-row md:gap-12">
           {/* ── LEFT — COPY ── */}
           <div className="w-full md:w-1/2">
@@ -25,7 +24,8 @@ export default function Hero({ handleScrollToSection }) {
             <Link
               href="https://scottypumpkin.com"
               target="_blank"
-              rel="noopener noreferrer">
+              rel="noopener noreferrer"
+            >
               {/* Logo — large, with layered glow rings */}
               <Image
                 width={1000}
@@ -53,17 +53,19 @@ export default function Hero({ handleScrollToSection }) {
                 color: "#0F172A",
                 letterSpacing: "-0.025em",
                 lineHeight: 1.1,
-              }}>
+              }}
+            >
               Take your Business
               <br />
-              to the Next Level with{" "}
-              <span style={{ color: "#1B5FA8" }}>Bfinit Ecommerce</span>
+              to the Next Level with <br />
+              <span className="text-[#F57C00]">Scotty Pumpkin SPUMP</span>
             </h1>
 
             {/* Description */}
             <p
               className="mb-8 mt-5 text-balance text-center text-base leading-relaxed md:text-left md:text-lg"
-              style={{ color: "rgba(15,23,42,0.52)" }}>
+              style={{ color: "rgba(15,23,42,0.52)" }}
+            >
               Effortlessly grow your business with pre-built templates or fully
               customized designs from market insights to seamless payment
               integration, cost-effective tools and dedicated SEO control.
@@ -79,7 +81,8 @@ export default function Hero({ handleScrollToSection }) {
                     border: "1px solid rgba(15,23,42,0.09)",
                     background: "#ffffff",
                     color: "rgba(15,23,42,0.50)",
-                  }}>
+                  }}
+                >
                   {icon}
                   {label}
                 </span>
@@ -93,7 +96,8 @@ export default function Hero({ handleScrollToSection }) {
                 className="group flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-semibold text-white transition-all duration-200 hover:brightness-105 active:scale-[0.98] sm:w-auto"
                 style={{
                   background: "#1B5FA8",
-                }}>
+                }}
+              >
                 Learn More
                 <MdOutlineArrowDownward className="text-base transition-transform duration-300 group-hover:translate-y-0.5" />
               </button>
@@ -122,7 +126,8 @@ export default function Hero({ handleScrollToSection }) {
               style={{
                 aspectRatio: "16/9",
                 border: "1px solid rgba(15,23,42,0.08)",
-              }}>
+              }}
+            >
               <iframe
                 src="https://www.youtube.com/embed/2SL7_FNubrw?si=cJ6ehWuFNORcqZXP"
                 title="e-Bfinit eCommerce Engine"
@@ -135,7 +140,8 @@ export default function Hero({ handleScrollToSection }) {
             {/* Video caption */}
             <p
               className="mt-3 text-center text-xs md:text-left"
-              style={{ color: "rgba(15,23,42,0.30)" }}>
+              style={{ color: "rgba(15,23,42,0.30)" }}
+            >
               e-Bfinit eCommerce Engine — see it in action
             </p>
           </div>

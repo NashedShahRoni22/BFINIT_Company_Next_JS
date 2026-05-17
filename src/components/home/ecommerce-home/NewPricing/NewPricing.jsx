@@ -66,6 +66,7 @@ const currencies = [
 const NewPricing = ({ pricingSection }) => {
   const [selectedDuration, setSelectedDuration] = useState(1);
   const [packages, setPackages] = useState([]);
+
   useEffect(() => {
     const fetchPackagesByDuration = async (duration) => {
       try {
@@ -81,11 +82,12 @@ const NewPricing = ({ pricingSection }) => {
     };
     fetchPackagesByDuration(selectedDuration);
   }, [selectedDuration]);
+
   return (
     <section ref={pricingSection} className="py-10 md:py-20">
       <Container>
         {/* Section Title */}
-        <div className="text-center">
+        {/* <div className="text-center">
           <div className="flex justify-center">
             <Image
               width={1000}
@@ -105,6 +107,15 @@ const NewPricing = ({ pricingSection }) => {
             <span className="text-brand">medium</span> to{" "}
             <span className="text-brand">enterprise</span>
           </h2>
+        </div> */}
+
+        <div className="relative w-full aspect-[3.54/1] rounded-xl overflow-hidden">
+          <Image
+            fill
+            src="/images/scotty-pumpkin-banner.png"
+            alt="Scotty Pumpkin Banner"
+            className="w-full"
+          />
         </div>
 
         {/* Duration + We Accept — single row */}
@@ -119,7 +130,8 @@ const NewPricing = ({ pricingSection }) => {
                   selectedDuration === duration.month
                     ? "bg-brand text-white"
                     : "text-gray-700 hover:text-gray-900"
-                }`}>
+                }`}
+              >
                 {duration.label}
               </button>
             ))}
@@ -135,7 +147,8 @@ const NewPricing = ({ pricingSection }) => {
                 <div
                   key={currency.id}
                   title={currency.label}
-                  className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-4 py-2">
+                  className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-4 py-2"
+                >
                   <span>{currency.icon}</span>
                   <span className="font-inter text-sm font-semibold text-gray-600">
                     {currency.label}

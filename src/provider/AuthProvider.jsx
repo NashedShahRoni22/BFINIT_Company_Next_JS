@@ -41,9 +41,7 @@ export default function AuthProvider({ children }) {
 
     setUser(null);
     setToken(null);
-
-    router.replace("/login");
-  }, [router]);
+  }, []);
 
   const isAuthenticated = Boolean(token && user);
 

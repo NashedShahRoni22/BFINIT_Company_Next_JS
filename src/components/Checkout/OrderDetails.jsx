@@ -56,7 +56,8 @@ function CopyField({ label, value }) {
         type="button"
         onClick={handleCopy}
         className="shrink-0 rounded-lg p-1.5 text-[#8FADC8] transition-colors hover:bg-[#F4F7FB] hover:text-[#186BB5]"
-        title="Copy">
+        title="Copy"
+      >
         {copied ? (
           <CheckCheck size={13} className="text-green-500" />
         ) : (
@@ -166,7 +167,8 @@ export default function OrderDetails({
                     active
                       ? "border-[#186BB5] bg-[#186BB5] shadow-md shadow-[#186BB5]/20"
                       : "border-[#D6E4F0] bg-white hover:border-[#186BB5]/40 hover:bg-[#F4F7FB]"
-                  }`}>
+                  }`}
+                >
                   <input
                     type="radio"
                     name="currency"
@@ -179,12 +181,14 @@ export default function OrderDetails({
                     {c.icon}
                   </span>
                   <span
-                    className={`text-xs font-bold leading-none ${active ? "text-white" : "text-[#4A6580]"}`}>
+                    className={`text-xs font-bold leading-none ${active ? "text-white" : "text-[#4A6580]"}`}
+                  >
                     {c.label}
                   </span>
                   {isDiscount && (
                     <span
-                      className={`rounded-full px-1.5 py-0.5 text-[8px] font-bold leading-none ${active ? "bg-white/25 text-white" : "bg-green-50 text-green-600"}`}>
+                      className={`rounded-full px-1.5 py-0.5 text-[8px] font-bold leading-none ${active ? "bg-white/25 text-white" : "bg-green-50 text-green-600"}`}
+                    >
                       −30%
                     </span>
                   )}
@@ -222,13 +226,16 @@ export default function OrderDetails({
                     active
                       ? "border-[#186BB5] bg-[#EBF2FA] shadow-sm"
                       : "border-[#D6E4F0] bg-white hover:border-[#186BB5]/50 hover:bg-[#F4F7FB]"
-                  }`}>
+                  }`}
+                >
                   <span
-                    className={active ? "text-[#186BB5]" : "text-[#8FADC8]"}>
+                    className={active ? "text-[#186BB5]" : "text-[#8FADC8]"}
+                  >
                     <Icon />
                   </span>
                   <span
-                    className={`text-xs font-bold leading-tight ${active ? "text-[#186BB5]" : "text-[#4A6580]"}`}>
+                    className={`text-xs font-bold leading-tight ${active ? "text-[#186BB5]" : "text-[#4A6580]"}`}
+                  >
                     {label}
                   </span>
                   {active && (
@@ -339,7 +346,8 @@ export default function OrderDetails({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded-xl bg-[#186BB5] py-3.5 text-sm font-bold text-white transition-colors hover:bg-[#145fa0] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60">
+            className="w-full rounded-xl bg-[#186BB5] py-3.5 text-sm font-bold text-white transition-colors hover:bg-[#145fa0] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+          >
             {isSubmitting ? "Processing…" : "Place Order"}
           </button>
         )}
@@ -347,8 +355,8 @@ export default function OrderDetails({
 
       {/* Footer */}
       <div className="border-t border-[#D6E4F0] bg-[#EBF2FA] px-5 py-3">
-        <p className="text-center text-[11px] text-[#8FADC8]">
-          <Lock /> Secure checkout · Cancel anytime
+        <p className="text-center flex items-center justify-center gap-1 text-[11px] text-[#8FADC8]">
+          <Lock size={14} /> Secure checkout · Cancel anytime
         </p>
       </div>
     </div>

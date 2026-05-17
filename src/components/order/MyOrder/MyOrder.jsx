@@ -84,7 +84,8 @@ function StatusBadge({ status }) {
   return (
     <span
       style={{ background: cfg.bg, color: cfg.color }}
-      className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-montserrat text-xs font-semibold tracking-wide">
+      className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-montserrat text-xs font-semibold tracking-wide"
+    >
       <Icon size={12} strokeWidth={2.5} />
       {cfg.label}
     </span>
@@ -146,7 +147,8 @@ function ManualPaymentCard({ payment }) {
           href={`${ECOM_BASE_URL}${payment.document}`}
           target="_blank"
           rel="noreferrer"
-          className="mt-3 inline-flex items-center gap-1.5 font-montserrat text-xs font-semibold text-[#186BB5] transition-opacity hover:opacity-70">
+          className="mt-3 inline-flex items-center gap-1.5 font-montserrat text-xs font-semibold text-[#186BB5] transition-opacity hover:opacity-70"
+        >
           <FileText size={13} />
           View Payment Document
           <ArrowUpRight size={12} />
@@ -164,7 +166,8 @@ function InvoiceSection({ invoices }) {
     <div className="mt-4">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 font-montserrat text-sm font-semibold text-gray-600 transition-colors hover:text-[#186BB5]">
+        className="flex items-center gap-2 font-montserrat text-sm font-semibold text-gray-600 transition-colors hover:text-[#186BB5]"
+      >
         <CreditCard size={15} strokeWidth={2} />
         Invoice #{inv.invoice_number}
         <StatusBadge status={inv.status} />
@@ -212,7 +215,8 @@ function PackageFeatures({ features }) {
         {visible.map((f, i) => (
           <li
             key={i}
-            className="flex items-center gap-2 font-sora text-sm text-gray-600">
+            className="flex items-center gap-2 font-sora text-sm text-gray-600"
+          >
             <ShieldCheck
               size={13}
               className="shrink-0 text-[#186BB5]"
@@ -225,7 +229,8 @@ function PackageFeatures({ features }) {
       {features.length > 5 && (
         <button
           onClick={() => setShowAll((v) => !v)}
-          className="mt-2 flex items-center gap-1 font-montserrat text-xs font-semibold text-[#186BB5] transition-opacity hover:opacity-70">
+          className="mt-2 flex items-center gap-1 font-montserrat text-xs font-semibold text-[#186BB5] transition-opacity hover:opacity-70"
+        >
           {showAll ? (
             <>
               Show less <ChevronUp size={12} />
@@ -258,7 +263,8 @@ function OrderCard({ order }) {
   return (
     <div
       className="overflow-hidden rounded-2xl"
-      style={{ border: "1.5px solid #e8edf2" }}>
+      style={{ border: "1.5px solid #e8edf2" }}
+    >
       {/* Header Strip */}
       {/* <div
         className="flex items-center justify-between gap-4 px-6 py-4"
@@ -387,7 +393,8 @@ function SkeletonCard() {
   return (
     <div
       className="animate-pulse overflow-hidden rounded-2xl"
-      style={{ border: "1.5px solid #e8edf2" }}>
+      style={{ border: "1.5px solid #e8edf2" }}
+    >
       <div className="h-16 bg-[#186BB5]/20" />
       <div className="grid grid-cols-4 gap-4 bg-white px-6 py-4">
         {[...Array(4)].map((_, i) => (
@@ -475,7 +482,8 @@ export default function MyOrders() {
           {error && (
             <div
               className="flex items-start gap-4 rounded-2xl p-6"
-              style={{ background: "#fff5f5", border: "1.5px solid #fecaca" }}>
+              style={{ background: "#fff5f5", border: "1.5px solid #fecaca" }}
+            >
               <XCircle
                 size={22}
                 color="#ef4444"
@@ -494,7 +502,8 @@ export default function MyOrders() {
           {!loading && !error && orders.length === 0 && (
             <div
               className="rounded-2xl p-12 text-center"
-              style={{ background: "white", border: "1.5px solid #e8edf2" }}>
+              style={{ background: "white", border: "1.5px solid #e8edf2" }}
+            >
               <Package
                 size={40}
                 className="mx-auto mb-4 text-gray-300"
@@ -513,8 +522,8 @@ export default function MyOrders() {
             <div className="space-y-4">
               <div className="w-full border border-gray-200 rounded-xl">
                 <Table className="w-full border-separate border-spacing-y-px">
-                  <TableHeader className="">
-                    <TableRow className="bg-brand/20 rounded-xl">
+                  <TableHeader>
+                    <TableRow>
                       <TableHead>Invoice</TableHead>
                       <TableHead>Package Name</TableHead>
                       <TableHead>Price</TableHead>
@@ -529,7 +538,8 @@ export default function MyOrders() {
                     {orders.map((order, idx) => (
                       <TableRow
                         key={idx}
-                        className="border-b border-b-gray-900 rounded-lg">
+                        className="border-b border-b-gray-900 rounded-lg"
+                      >
                         <TableCell className="rounded-l-lg text-muted-foreground">
                           {order.packageInvoice.invoice_number}
                         </TableCell>
@@ -565,10 +575,12 @@ export default function MyOrders() {
                         <TableCell className="rounded-r-lg">
                           <button
                             className="bg-brand rounded-sm px-2 py-1.5 text-white"
-                            type="button">
+                            type="button"
+                          >
                             <Link
                               href={`/my-orders/${order.packageInvoice.invoice_number}`}
-                              className="text-sm cursor-pointer  transition">
+                              className="text-sm cursor-pointer  transition"
+                            >
                               View Details
                             </Link>
                           </button>

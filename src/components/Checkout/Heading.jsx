@@ -21,16 +21,17 @@ export default function Heading({ currencies }) {
       </div>
 
       {/* We Accept — single row */}
-      <div className="mt-8 flex items-center justify-center gap-2.5">
-        <span className="font-sora text-[10px] font-bold uppercase tracking-widest text-gray-400">
+      <div className="mt-8 flex items-start md:items-center justify-center gap-2.5">
+        <span className="font-sora shrink-0 text-[10px] font-bold uppercase tracking-widest text-gray-400">
           We accept
         </span>
-        <div className="flex items-center gap-1.5">
+        <div className="flex md:items-center items-start flex-wrap gap-1.5">
           {currencies.map((currency) => (
             <div
               key={currency.id}
               title={currency.label}
-              className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5">
+              className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5"
+            >
               {currency.icon}
               <span className="font-sora text-xs font-semibold text-gray-600">
                 {currency.label}
