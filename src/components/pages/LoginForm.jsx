@@ -6,7 +6,7 @@ import Container from "@/components/shared/Container";
 import { post } from "@/lib/api";
 import useAuth from "@/hooks/useAuth";
 
-export default function Login() {
+export default function LoginForm() {
   const [form, setForm] = useState({
     email: "",
     password: "",
