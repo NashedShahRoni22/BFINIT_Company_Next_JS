@@ -410,8 +410,9 @@ export default function MyOrders() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!user) {
-      return router.push("/login");
+    if (!token || !user) {
+      router.replace("/login");
+      return;
     }
     async function fetchOrders() {
       try {
@@ -518,7 +519,6 @@ export default function MyOrders() {
                       <TableHead>Package Name</TableHead>
                       <TableHead>Price</TableHead>
                       <TableHead>Starts</TableHead>
-                      <TableHead>Invoice</TableHead>
                       <TableHead>Method</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Action</TableHead>
@@ -550,10 +550,6 @@ export default function MyOrders() {
 
                         <TableCell className={"text-muted-foreground"}>
                           {formatDate(order.created_at)}
-                        </TableCell>
-
-                        <TableCell className="text-muted-foreground">
-                          {order.packageInvoice.invoice_number}
                         </TableCell>
 
                         <TableCell className="text-muted-foreground capitalize">

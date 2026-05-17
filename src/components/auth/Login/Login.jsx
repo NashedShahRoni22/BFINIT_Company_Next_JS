@@ -60,7 +60,6 @@ export default function Login() {
     setLoading(true);
     const { data, ok, error } = await post("/api/v1/auth/login", payload);
     setLoading(false);
-
     if (!ok) {
       setErrors({ form: error });
       return;

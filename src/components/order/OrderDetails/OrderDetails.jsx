@@ -67,7 +67,6 @@ export default function OrderDetails({ invoice }) {
     fetchOrderDetails();
   }, [token, invoice, isAuthenticated, router]);
 
-  // console.log(orderDetails);
   if (loading) return <Loader />;
   return <PackageOrderDetails order={orderDetails} />;
 }

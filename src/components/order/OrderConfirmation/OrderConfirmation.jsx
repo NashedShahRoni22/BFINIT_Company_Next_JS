@@ -67,7 +67,6 @@ export default function OrderConfirmation({ invoice }) {
 
   // ── Derived data ──────────────────────────────────────────────────────────
 
-  console.log(order);
   const pkg = order.package;
   const period = order.subscriptionPeriod;
   const invoices = order.packageInvoice;

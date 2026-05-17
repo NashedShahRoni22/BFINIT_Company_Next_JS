@@ -123,9 +123,6 @@ export default function CheckoutForm({ details, currencies, bankInfo }) {
             console.error("No client_secret in response");
           }
         } else if (paymentMethod === "bank") {
-          // const orderId = data.data.packageOrder?.id;
-          // const invoiceId = data.data.invoice?.id;
-          console.log(data.data.invoice.invoice_number);
           const invoice_number = data.data.invoice.invoice_number;
           // navigate.push(`/order-confirmation/${orderId}/${invoiceId}`);
           navigate.push(`/order-confirmation/${invoice_number}`);
@@ -141,9 +138,6 @@ export default function CheckoutForm({ details, currencies, bankInfo }) {
   };
 
   const handleStripeSuccess = () => {
-    // const orderId = pendingOrderData?.packageOrder?.id;
-    // const invoiceId = pendingOrderData?.invoice?.id;
-    console.log(pendingOrderData.invoice.invoice_number);
     const invoice_number = pendingOrderData.invoice.invoice_number;
     // navigate.push(`/order-confirmation/${orderId}/${invoiceId}`);
     navigate.push(`/order-confirmation/${invoice_number}`);

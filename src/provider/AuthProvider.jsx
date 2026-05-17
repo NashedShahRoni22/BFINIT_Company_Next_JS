@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { createContext, useCallback, useEffect, useState } from "react";
 
 export const AuthContext = createContext(null);
@@ -7,6 +8,7 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
   // Rehydrate from localStorage on first load
   useEffect(() => {
     try {
@@ -34,11 +36,14 @@ export default function AuthProvider({ children }) {
   }, []);
 
   const logout = useCallback(() => {
-    setUser(null);
-    setToken(null);
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-  }, []);
+
+    setUser(null);
+    setToken(null);
+
+    router.replace("/login");
+  }, [router]);
 
   const isAuthenticated = Boolean(token && user);
 

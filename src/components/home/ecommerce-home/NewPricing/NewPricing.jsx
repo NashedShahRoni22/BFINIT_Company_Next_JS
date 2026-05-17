@@ -81,7 +81,6 @@ const NewPricing = ({ pricingSection }) => {
     };
     fetchPackagesByDuration(selectedDuration);
   }, [selectedDuration]);
-  // console.log(packages);
   return (
     <section ref={pricingSection} className="py-10 md:py-20">
       <Container>
