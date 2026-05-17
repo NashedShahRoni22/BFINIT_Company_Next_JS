@@ -1,11 +1,7 @@
 import EcommerceHome from "@/components/home/ecommerce-home/EcommerceHome";
 
 const page = () => {
-  return (
-    <>
-      <EcommerceHome />
-    </>
-  );
+  return <EcommerceHome />;
 };
 
 export default page;
