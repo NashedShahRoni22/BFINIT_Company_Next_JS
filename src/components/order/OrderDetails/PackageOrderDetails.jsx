@@ -41,6 +41,7 @@ export function PackageOrderDetails({ order }) {
 
   // Accessing the manual payment from the invoice object
   const manualPayment = inv?.manualPayments?.[0];
+  const duration = sub.duration === 1 ? "month" : "year";
 
   return (
     <Container>
@@ -87,7 +88,7 @@ export function PackageOrderDetails({ order }) {
                     </p>
                   )}
                   <p className="text-[11px] text-muted-foreground">
-                    / {sub?.duration} months
+                    / {sub?.duration} {duration}
                   </p>
                 </div>
               </div>

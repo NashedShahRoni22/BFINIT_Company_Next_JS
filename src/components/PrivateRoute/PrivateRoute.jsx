@@ -18,11 +18,12 @@ export default function PrivateRoute({ children }) {
     if (token) {
       setAuthenticated(true);
     } else {
-      router.push("/login");
+      setLoading(true);
+      router.replace("/login");
     }
 
     setLoading(false);
-  }, [router]);
+  }, [router, token]);
 
   if (loading) return <Loader />;
 

@@ -45,17 +45,16 @@ export default function OrderTable({ orders }) {
   });
 
   const getTableData = (order, idx) => {
+    console.log(order);
     return [
       order.packageInvoice.invoice_number,
       order.package.package_type,
 
       <>
-        <span className="font-inter text-base font-bold">
-          {order.formattedAmount}
+        <span className="font-inter text-base text-start font-bold">
+          {"\u20AC"} {order.formattedAmount}
         </span>
-
         <span>/</span>
-
         <span className="text-sm">{order.duration}</span>
       </>,
 
@@ -79,12 +78,12 @@ export default function OrderTable({ orders }) {
       </Badge>,
 
       <button
-        className="bg-brand rounded-sm px-2 py-1.5 text-white"
+        className="bg-brand/90 rounded-sm text-xs px-1.5 py-1.5 text-white border border-brand/90"
         type="button"
         key={idx}>
         <Link
           href={`/my-orders/${order.packageInvoice.invoice_number}`}
-          className="cursor-pointer text-sm transition">
+          className="cursor-pointer transition">
           View Details
         </Link>
       </button>,
