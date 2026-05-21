@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import Container from "../shared/Container";
-import Loader from "../shared/Loader";
+import Container from "../../shared/Container";
+import Loader from "../../shared/Loader";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
@@ -24,13 +24,13 @@ export default function Blogs() {
     <Container>
       <section className="mx-5 py-10 md:container md:mx-auto">
         <div className="flex justify-between">
-          <h2 className="font-semibold text-primary md:text-2xl">
+          <h2 className="font-semibold text-brand md:text-2xl">
             Recent Blogs & Information
           </h2>
           {location.pathname === "/" && (
             <Link
-              to={"/blogs"}
-              className="rounded bg-primary px-4 py-2 text-white shadow">
+              href={"/blogs"}
+              className="rounded bg-brand px-4 py-2 text-white shadow">
               View All
             </Link>
           )}
@@ -65,8 +65,8 @@ export default function Blogs() {
 
                     <div className="p-4 text-right">
                       <Link
-                        href={`/blog/${data.custom_url}`}
-                        className="inline-block w-fit self-start rounded bg-primary px-4 py-2 text-white">
+                        href={`/blogs/${data.custom_url}`}
+                        className="inline-block w-fit self-start rounded bg-brand px-4 py-2 text-white">
                         Read More
                       </Link>
                     </div>
@@ -96,8 +96,8 @@ export default function Blogs() {
                         className="mb-5 mt-1.5 text-justify"
                       />
                       <Link
-                        to={`/blog/${data.custom_url}`}
-                        className="inline-block w-fit self-start rounded bg-primary px-4 py-2 text-white">
+                        href={`/blogs/${data.custom_url}`}
+                        className="inline-block w-fit self-start rounded bg-brand px-4 py-2 text-white">
                         Read More
                       </Link>
                     </div>

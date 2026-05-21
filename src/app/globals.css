@@ -132,6 +132,7 @@
 body {
   font-family: var(--font-default), sans-serif;
 }
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
