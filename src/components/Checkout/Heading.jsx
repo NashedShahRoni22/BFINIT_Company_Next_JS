@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Tag } from "lucide-react";
 
 export default function Heading({ currencies }) {
   return (
@@ -29,16 +30,23 @@ export default function Heading({ currencies }) {
           {currencies.map((currency) => (
             <div
               key={currency.id}
-              title={currency.label}
               className="flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5"
             >
-              {currency.icon}
-              <span className="font-sora text-xs font-semibold text-gray-600">
-                {currency.label}
-              </span>
-              {(currency.id === "spump" || currency.id === "usff") && (
-                <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[9px] font-bold text-primary">
-                  −30%
+              <Image
+                width={1000}
+                height={1000}
+                src={currency.icon}
+                alt={currency.label}
+                className="size-4 rounded-full"
+              />
+              <span className="text-xs font-medium">{currency.label}</span>
+              {currency.discount && (
+                <span
+                  className="inline-flex items-center gap-0.5 text-[11px] font-semibold
+    text-emerald-800 bg-emerald-100 rounded px-1.5 py-0.5 ml-0.5 leading-none"
+                >
+                  <Tag className="size-2.5" />
+                  {currency.discount}% off
                 </span>
               )}
             </div>

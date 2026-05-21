@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { useState } from "react";
 import {
   Clock,
@@ -8,9 +9,11 @@ import {
   Copy,
   CheckCheck,
   Lock,
+  Tag,
+  CircleCheck,
 } from "lucide-react";
 import stripeIcon from "../../assets/icons/stripe.png";
-import Image from "next/image";
+import Link from "next/link";
 
 const PAYMENT_METHODS = [
   {
@@ -78,15 +81,15 @@ export default function OrderDetails({
   onCurrencyChange,
   isSubmitting = false,
   readOnly = false,
+  selectedCurrency,
+  setSelectedCurrency,
+  isCryptoCurrencySelected,
 }) {
   const [localPayment, setLocalPayment] = useState("stripe");
 
   const activePayment = paymentMethod ?? localPayment;
-  const hasWeb3Discount = DISCOUNT_CURRENCY_IDS.includes(currencyId);
-  const selectedCurrency =
-    currencies.find((c) => c.id === currencyId) ?? currencies[0];
 
-  const { package_type_label, package_name, pricing } = details;
+  const { id, package_type_label, package_name, pricing } = details;
   const {
     duration,
     base_price, // monthly price
@@ -95,21 +98,33 @@ export default function OrderDetails({
   } = pricing;
 
   // If there's an offer, compute discount off total_base_price
-  const hasOffer = offer_percentage != null && offer_percentage > 0;
+  const hasOffer =
+    selectedCurrency?.discount != null && selectedCurrency?.discount > 0;
   const discountAmount = hasOffer
-    ? ((total_base_price * offer_percentage) / 100).toFixed(2)
+    ? ((total_base_price * selectedCurrency?.discount) / 100).toFixed(2)
     : null;
   const finalTotal = hasOffer
     ? (total_base_price - parseFloat(discountAmount)).toFixed(2)
     : total_base_price.toFixed(2);
+
+  const cryptoCheckoutUrl = selectedCurrency?.discount
+    ? `/checkout/crypto/${id}/${duration}?discount=${selectedCurrency?.discount}`
+    : `/checkout/crypto/${id}/${duration}`;
 
   const handlePayment = (id) => {
     setLocalPayment(id);
     onPaymentChange?.(id);
   };
 
+  const handleCurrencyChange = (currency) => {
+    setSelectedCurrency(currency);
+    onCurrencyChange?.(currency.id);
+  };
+
   return (
-    <div className="md:sticky w-full top-20 h-fit overflow-hidden rounded-xl border border-[#D6E4F0] bg-white">
+    <div
+      className={`md:sticky top-20 h-fit overflow-hidden rounded-xl border border-[#D6E4F0] bg-white ${isCryptoCurrencySelected ? "w-full max-w-xl mx-auto" : "w-full"}`}
+    >
       {/* Header */}
       <div className="relative overflow-hidden bg-[#186BB5] px-5 pb-6 pt-5">
         <div className="absolute -right-6 -top-6 h-28 w-28 rounded-full bg-white/5" />
@@ -129,7 +144,7 @@ export default function OrderDetails({
               </span>
               {hasOffer && (
                 <span className="bg-emerald-400/20 text-emerald-300 inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-bold">
-                  <Sparkles size={9} /> −{offer_percentage}% off
+                  <Sparkles size={9} /> {selectedCurrency?.discount}% off
                 </span>
               )}
             </div>
@@ -159,7 +174,6 @@ export default function OrderDetails({
           <div className="flex flex-wrap gap-2">
             {currencies.map((c) => {
               const active = currencyId === c.id;
-              const isDiscount = DISCOUNT_CURRENCY_IDS.includes(c.id);
               return (
                 <label
                   key={c.id}
@@ -174,83 +188,105 @@ export default function OrderDetails({
                     name="currency"
                     value={c.id}
                     checked={active}
-                    onChange={() => onCurrencyChange?.(c.id)}
+                    onChange={() => handleCurrencyChange(c)}
                     className="sr-only"
                   />
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center">
-                    {c.icon}
-                  </span>
+                  <Image
+                    width={1000}
+                    height={1000}
+                    src={c.icon}
+                    alt={c.label}
+                    className="size-4 rounded-full"
+                  />
                   <span
                     className={`text-xs font-bold leading-none ${active ? "text-white" : "text-[#4A6580]"}`}
                   >
                     {c.label}
                   </span>
-                  {isDiscount && (
+                  {c.discount && (
                     <span
-                      className={`rounded-full px-1.5 py-0.5 text-[8px] font-bold leading-none ${active ? "bg-white/25 text-white" : "bg-green-50 text-green-600"}`}
+                      className={`inline-flex items-center gap-0.5 text-[11px] font-semibold rounded px-1.5 py-0.5 ml-0.5 leading-none ${
+                        active
+                          ? "bg-white/90 text-[#186BB5]"
+                          : "bg-emerald-100 text-emerald-800"
+                      }`}
                     >
-                      −30%
+                      <Tag className="size-2.5" />
+                      {c.discount}% off
                     </span>
                   )}
                 </label>
               );
             })}
           </div>
-          {hasWeb3Discount && (
-            <div className="flex items-start gap-2.5 rounded-xl border border-green-200 bg-green-50 px-3.5 py-3">
-              <Sparkles size={14} className="mt-0.5 shrink-0 text-green-500" />
-              <p className="text-[11px] leading-relaxed text-green-700">
-                <span className="font-bold">30% discount applied!</span>{" "}
-                You&apos;re saving by paying with{" "}
-                <span className="font-bold">{selectedCurrency?.label}</span> —
-                part of the Scotty Pumpkin Web3 Ecosystem.
+          {selectedCurrency?.discount && (
+            <div
+              className="flex items-center gap-2.5 rounded-md border border-green-200
+  border-l-[2.5px] border-l-green-700 bg-green-50 px-3.5 py-2.5"
+            >
+              <CircleCheck className="size-3.5 shrink-0 text-green-700" />
+              <p className="text-[12.5px] leading-snug text-green-800">
+                <strong className="font-semibold text-green-900">
+                  {selectedCurrency.discount}% off applied
+                </strong>{" "}
+                - saving by paying with{" "}
+                <strong className="font-semibold text-green-900">
+                  {selectedCurrency.label}
+                </strong>
+                , part of the Scotty Pumpkin Web3 Ecosystem.
               </p>
             </div>
           )}
         </div>
 
         {/* Payment Method */}
-        <div className="space-y-2.5">
-          <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#8FADC8]">
-            Payment Method
-          </p>
-          <div className="grid grid-cols-2 gap-2.5">
-            {PAYMENT_METHODS.map(({ id, label, icon: Icon }) => {
-              const active = activePayment === id;
-              return (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => handlePayment(id)}
-                  className={`relative flex items-center gap-3 rounded-xl border px-4 py-3 text-left transition-all duration-150 ${
-                    active
-                      ? "border-[#186BB5] bg-[#EBF2FA] shadow-sm"
-                      : "border-[#D6E4F0] bg-white hover:border-[#186BB5]/50 hover:bg-[#F4F7FB]"
-                  }`}
-                >
-                  <span
-                    className={active ? "text-[#186BB5]" : "text-[#8FADC8]"}
+        {!isCryptoCurrencySelected && (
+          <div className="space-y-2.5">
+            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#8FADC8]">
+              Payment Method
+            </p>
+            <div className="grid grid-cols-2 gap-2.5">
+              {PAYMENT_METHODS.map(({ id, label, icon: Icon }) => {
+                const active = activePayment === id;
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => handlePayment(id)}
+                    className={`relative flex items-center gap-3 rounded-xl border px-4 py-3 text-left transition-all duration-150 ${
+                      active
+                        ? "border-[#186BB5] bg-[#EBF2FA] shadow-sm"
+                        : "border-[#D6E4F0] bg-white hover:border-[#186BB5]/50 hover:bg-[#F4F7FB]"
+                    }`}
                   >
-                    <Icon />
-                  </span>
-                  <span
-                    className={`text-xs font-bold leading-tight ${active ? "text-[#186BB5]" : "text-[#4A6580]"}`}
-                  >
-                    {label}
-                  </span>
-                  {active && (
-                    <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#186BB5]">
-                      <Check size={9} className="text-white" strokeWidth={3} />
+                    <span
+                      className={active ? "text-[#186BB5]" : "text-[#8FADC8]"}
+                    >
+                      <Icon />
                     </span>
-                  )}
-                </button>
-              );
-            })}
+                    <span
+                      className={`text-xs font-bold leading-tight ${active ? "text-[#186BB5]" : "text-[#4A6580]"}`}
+                    >
+                      {label}
+                    </span>
+                    {active && (
+                      <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[#186BB5]">
+                        <Check
+                          size={9}
+                          className="text-white"
+                          strokeWidth={3}
+                        />
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Bank Info */}
-        {activePayment === "bank" && bankInfo && (
+        {!isCryptoCurrencySelected && activePayment === "bank" && bankInfo && (
           <div className="overflow-hidden rounded-xl border border-[#D6E4F0]">
             <div className="border-b border-[#D6E4F0] bg-[#186BB5]/5 px-4 py-2.5">
               <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#186BB5]">
@@ -323,7 +359,7 @@ export default function OrderDetails({
             {hasOffer && (
               <div className="flex items-center justify-between px-4 py-2.5">
                 <span className="text-xs text-green-600">
-                  Discount ({offer_percentage}% off)
+                  Discount ({selectedCurrency?.discount}% off)
                 </span>
                 <span className="text-xs font-semibold text-green-600">
                   −€{discountAmount}
@@ -342,7 +378,7 @@ export default function OrderDetails({
         </div>
 
         {/* Submit — hidden in readOnly (card entry) step */}
-        {!readOnly && (
+        {!isCryptoCurrencySelected && !readOnly && (
           <button
             type="submit"
             disabled={isSubmitting}
@@ -350,6 +386,15 @@ export default function OrderDetails({
           >
             {isSubmitting ? "Processing…" : "Place Order"}
           </button>
+        )}
+
+        {isCryptoCurrencySelected && (
+          <Link
+            href={cryptoCheckoutUrl}
+            className="w-full inline-block text-center rounded-xl bg-[#186BB5] py-3.5 text-sm font-bold text-white transition-colors hover:bg-[#145fa0] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            Continue with Crypto
+          </Link>
         )}
       </div>
 

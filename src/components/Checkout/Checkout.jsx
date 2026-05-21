@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { ECOM_BASE_URL } from "@/config";
 import { useParams } from "next/navigation";
 import Container from "../shared/Container";
@@ -12,51 +11,26 @@ const currencies = [
   {
     id: "eur",
     label: "Euro",
-    symbol: "€",
-    icon: (
-      <span className="flex h-4 w-4 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
-        €
-      </span>
-    ),
+    icon: "/icons/euro.png",
+    discount: null,
   },
   {
     id: "spump",
     label: "SPUMP",
-    icon: (
-      <Image
-        width={1000}
-        height={1000}
-        src="https://scottypumpkin.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhero.ecd1dcc2.png&w=640&q=75"
-        alt=""
-        className="h-4 w-4 rounded-full"
-      />
-    ),
+    icon: "https://scottypumpkin.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhero.ecd1dcc2.png&w=640&q=75",
+    discount: 30,
   },
   {
     id: "usff",
     label: "USFF",
-    icon: (
-      <Image
-        width={1000}
-        height={1000}
-        src="https://usfranc.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.bdd0bb3c.webp&w=640&q=100"
-        alt=""
-        className="h-4 w-4 rounded-full"
-      />
-    ),
+    icon: "https://usfranc.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.bdd0bb3c.webp&w=640&q=75",
+    discount: 30,
   },
   {
     id: "usdc",
     label: "USDC",
-    icon: (
-      <Image
-        width={1000}
-        height={1000}
-        src="https://assets.coingecko.com/coins/images/6319/small/usdc.png"
-        alt=""
-        className="h-4 w-4 rounded-full"
-      />
-    ),
+    icon: "https://assets.coingecko.com/coins/images/6319/small/usdc.png",
+    discount: null,
   },
 ];
 
@@ -103,11 +77,13 @@ export default function Checkout() {
 
   if (!loading && packDetails?.id) {
     content = (
-      <CheckoutForm
-        details={packDetails}
-        currencies={currencies}
-        bankInfo={bankInfo}
-      />
+      <div>
+        <CheckoutForm
+          details={packDetails}
+          currencies={currencies}
+          bankInfo={bankInfo}
+        />
+      </div>
     );
   }
 

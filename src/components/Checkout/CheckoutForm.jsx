@@ -20,6 +20,9 @@ export default function CheckoutForm({ details, currencies, bankInfo }) {
   const [slipFile, setSlipFile] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currencyId, setCurrencyId] = useState(currencies[0]?.id ?? "eur");
+  const [selectedCurrency, setSelectedCurrency] = useState(currencies[0]);
+
+  const isCryptoCurrencySelected = selectedCurrency?.id !== "eur";
 
   const [stripeClientSecret, setStripeClientSecret] = useState(null);
   const [pendingOrderData, setPendingOrderData] = useState(null);
@@ -155,7 +158,8 @@ export default function CheckoutForm({ details, currencies, bankInfo }) {
         options={{
           clientSecret: stripeClientSecret,
           appearance: { theme: "none" },
-        }}>
+        }}
+      >
         <div className="grid grid-cols-1 gap-8 py-16 md:grid-cols-2">
           <StripeCardForm
             clientSecret={stripeClientSecret}
@@ -186,14 +190,20 @@ export default function CheckoutForm({ details, currencies, bankInfo }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="flex flex-col-reverse md:flex-row gap-8 py-16">
-        <PersonalInfo
-          paymentMethod={paymentMethod}
-          formData={formData}
-          setFormData={setFormData}
-          slipFile={slipFile}
-          setSlipFile={setSlipFile}
-        />
+      <div
+        className={`flex flex-col-reverse gap-8 py-16 ${
+          isCryptoCurrencySelected ? "md:flex-col items-center" : "md:flex-row"
+        }`}
+      >
+        {!isCryptoCurrencySelected && (
+          <PersonalInfo
+            paymentMethod={paymentMethod}
+            formData={formData}
+            setFormData={setFormData}
+            slipFile={slipFile}
+            setSlipFile={setSlipFile}
+          />
+        )}
         {loading ? (
           <OrderDetailsSkeleton />
         ) : (
@@ -206,6 +216,9 @@ export default function CheckoutForm({ details, currencies, bankInfo }) {
             currencyId={currencyId}
             onCurrencyChange={setCurrencyId}
             isSubmitting={isSubmitting}
+            selectedCurrency={selectedCurrency}
+            setSelectedCurrency={setSelectedCurrency}
+            isCryptoCurrencySelected={isCryptoCurrencySelected}
           />
         )}
       </div>

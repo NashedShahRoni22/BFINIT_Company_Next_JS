@@ -5,12 +5,9 @@ import formatPrice from "../../utils/formatPrice";
 import { getSpumpSavings } from "../../utils/getSpumpSavings";
 import Link from "next/link";
 import useAuth from "@/hooks/useAuth";
-import { usePathname, useRouter } from "next/navigation";
 
 export default function EcomPricingCard3({ pack, selectedDuration }) {
   const { isAuthenticated } = useAuth();
-  const router = useRouter();
-  const pathname = usePathname();
 
   const {
     id,
@@ -41,27 +38,23 @@ export default function EcomPricingCard3({ pack, selectedDuration }) {
     ? getSpumpSavings(total_base_price, spumpDiscountPercent)
     : "0";
 
-  const handleBuyPackage = (id, selectedDuration) => {
-    const destination = `/checkout/packages/${id}/${selectedDuration}`;
-
-    if (!isAuthenticated) {
-      router.push(`/login?redirect=${encodeURIComponent(destination)}`);
-      return;
-    }
-
-    router.push(destination);
-  };
+  const buyingUrl = isAuthenticated
+    ? `/checkout/packages/${id}/${selectedDuration}`
+    : `/login?redirect=${encodeURIComponent(`/checkout/packages/${id}/${selectedDuration}`)}`;
 
   return (
     <div
-      className={`h-fit overflow-hidden rounded-3xl ${badge ? "bg-brand" : ""}`}>
+      className={`h-fit overflow-hidden rounded-3xl ${badge ? "bg-brand" : ""}`}
+    >
       <div
-        className={`flex h-7 items-center justify-center text-sm font-semibold text-white ${badge ? "bg-brand" : "bg-transparent"}`}>
+        className={`flex h-7 items-center justify-center text-sm font-semibold text-white ${badge ? "bg-brand" : "bg-transparent"}`}
+      >
         {badge && <p>{badge}</p>}
       </div>
 
       <div
-        className={`rounded-3xl border bg-white ${badge ? "border-brand" : "border-softGray"}`}>
+        className={`rounded-3xl border bg-white ${badge ? "border-brand" : "border-softGray"}`}
+      >
         <div>
           <div className="p-5">
             {/* Plan label + name */}
@@ -103,28 +96,16 @@ export default function EcomPricingCard3({ pack, selectedDuration }) {
               Billed {isYearSelected ? "yearly" : "monthly"} · cancel anytime
             </p>
 
-            {/* <Link
-              href={
-                isAuthenticated
-                  ? `/checkout/packages/${id}/${selectedDuration}`
-                  : "/login"
-              }
+            <Link
+              href={buyingUrl}
               className={`mt-5 block w-full rounded-xl py-2.5 text-center text-sm font-bold transition-colors duration-150 ${
                 badge
                   ? "bg-brand text-white hover:bg-brand/90"
                   : "border-[1.5px] border-brand bg-white text-brand hover:bg-brand/5"
-              }`}>
+              }`}
+            >
               Get Started
-            </Link> */}
-            <button
-              onClick={() => handleBuyPackage(id, selectedDuration)}
-              className={`mt-5 block w-full rounded-xl py-2.5 text-center text-sm font-bold transition-colors duration-150 ${
-                badge
-                  ? "bg-brand text-white hover:bg-brand/90"
-                  : "border-[1.5px] border-brand bg-white text-brand hover:bg-brand/5"
-              }`}>
-              Get Started
-            </button>
+            </Link>
 
             <p className="mt-2 text-[11px] text-gray-600">
               Or pay with{" "}
@@ -178,7 +159,8 @@ export default function EcomPricingCard3({ pack, selectedDuration }) {
             {hasMore && (
               <button
                 onClick={() => setShowFullDesc((prev) => !prev)}
-                className="mt-3 flex w-full items-center gap-1.5 py-1.5 text-[11px] font-semibold text-gray-600 transition-colors hover:text-brand">
+                className="mt-3 flex w-full items-center gap-1.5 py-1.5 text-[11px] font-semibold text-gray-600 transition-colors hover:text-brand"
+              >
                 {showFullDesc ? (
                   <>
                     Show less <ChevronUp size={12} strokeWidth={2} />

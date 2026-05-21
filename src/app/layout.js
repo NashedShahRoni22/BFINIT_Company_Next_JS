@@ -1,9 +1,9 @@
 import { Inter, Roboto } from "next/font/google";
-import "./globals.css";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
 import Chatbot from "@/components/Chatbot/Chatbot";
 import AuthProvider from "@/provider/AuthProvider";
+import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -27,7 +27,8 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       className={`${inter.variable} ${roboto.variable} h-full antialiased`}
-      data-scroll-behavior="smooth">
+      data-scroll-behavior="smooth"
+    >
       <AuthProvider>
         <body className="min-h-full flex flex-col">
           <Navbar />
