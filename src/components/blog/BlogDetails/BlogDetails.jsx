@@ -54,6 +54,19 @@ export default function BlogDetailPage({ slug }) {
     return <p className="text-center mt-10 text-gray-500">No details found</p>;
   }
 
+  function handleShare() {
+    if (navigator.share) {
+      navigator.share({
+        title: blog.title,
+        url: window.location.href,
+      });
+    } else {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert("Link copied to clipboard!");
+      });
+    }
+  }
+
   return (
     <Container>
       <div className="pb-12 mt-20">
@@ -78,19 +91,7 @@ export default function BlogDetailPage({ slug }) {
           </Link>
           <div className="flex gap-2">
             <button
-              className="flex items-center gap-1.5 text-[12px] text-[#6b7280] bg-transparent border border-[#d1d5db] rounded-full px-3 py-1.25 cursor-pointer hover:bg-[#f3f4f6] hover:text-[#111827]"
-              aria-label="Share on Twitter">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-              </svg>
-              <span className="max-[480px]:hidden">Tweet</span>
-            </button>
-            <button
+              onClick={handleShare}
               className="flex items-center gap-1.5 text-[12px] text-[#6b7280] bg-transparent border border-[#d1d5db] rounded-full px-3 py-1.25 cursor-pointer hover:bg-[#f3f4f6] hover:text-[#111827]"
               aria-label="Share">
               <svg
@@ -110,22 +111,6 @@ export default function BlogDetailPage({ slug }) {
                 <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
               </svg>
               <span className="max-[480px]:hidden">Share</span>
-            </button>
-            <button
-              className="flex items-center gap-1.5 text-[12px] text-[#6b7280] bg-transparent border border-[#d1d5db] rounded-full px-3 py-1.25 cursor-pointer hover:bg-[#f3f4f6] hover:text-[#111827]"
-              aria-label="Bookmark">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-              </svg>
             </button>
           </div>
         </header>
@@ -225,7 +210,9 @@ export default function BlogDetailPage({ slug }) {
                   </span>
                 ))}
               </div>
-              <button className="flex items-center gap-1.5 text-[12px] text-[#6b7280] bg-transparent border border-[#d1d5db] rounded-full px-3 py-1.25 cursor-pointer hover:bg-[#f3f4f6] hover:text-[#111827]">
+              <button
+                onClick={handleShare}
+                className="flex items-center gap-1.5 text-[12px] text-[#6b7280] bg-transparent border border-[#d1d5db] rounded-full px-3 py-1.25 cursor-pointer hover:bg-[#f3f4f6] hover:text-[#111827]">
                 <svg
                   width="14"
                   height="14"
