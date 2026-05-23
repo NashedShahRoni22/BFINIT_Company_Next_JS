@@ -305,7 +305,7 @@ export default function Navbar() {
 
       {/* mobile view  */}
       {showNav && (
-        <div className="top-18 absolute left-0 flex h-[80vh] min-w-full flex-col gap-4 overflow-y-scroll bg-white p-5 md:px-14 lg:hidden">
+        <div className="top-14 absolute left-0 flex h-screen min-w-full flex-col gap-4 overflow-y-scroll bg-white p-5 md:px-14 lg:hidden">
           {updatedMenuItems.map((mi, i) => (
             <div key={i}>
               {mi.child ? (
@@ -391,7 +391,7 @@ export default function Navbar() {
               )}
             </div>
           ))}
-          <div className="flex gap-3">
+          <div className="flex gap-3 mt-2">
             {isAuthenticated ? (
               <>
                 <Link
@@ -405,7 +405,7 @@ export default function Navbar() {
                     logout();
                     setShowNav(false);
                   }}
-                  className="w-fit rounded border border-[#ef4444] px-4 py-2 text-[#ef4444] shadow">
+                  className="w-fit rounded border border-[#ef4444] px-4 py-2 text-[#ef4444] shadow cursor-pointer">
                   Log out
                 </button>
               </>
