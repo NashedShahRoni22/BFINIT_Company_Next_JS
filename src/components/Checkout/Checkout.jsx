@@ -17,7 +17,7 @@ const currencies = [
   {
     id: "spump",
     label: "SPUMP",
-    icon: "https://scottypumpkin.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhero.ecd1dcc2.png&w=640&q=75",
+    icon: "/icons/spump.webp",
     discount: 30,
   },
   {

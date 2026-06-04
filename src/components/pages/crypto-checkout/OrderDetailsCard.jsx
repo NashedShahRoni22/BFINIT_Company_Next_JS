@@ -1,5 +1,6 @@
-import formatPrice from "@/utils/formatPrice";
 import { Clock } from "lucide-react";
+import formatPrice from "@/utils/formatPrice";
+import { cn } from "@/lib/utils";
 
 export default function OrderDetailsCard({
   packDetails = {},
@@ -7,8 +8,10 @@ export default function OrderDetailsCard({
   originalPrice,
   discountAmount,
   subTotalPrice,
+  formattedRadiumPrice,
   duration,
   isYearly,
+  wallet,
 }) {
   const { package_name, pricing } = packDetails || {};
 
@@ -87,15 +90,25 @@ export default function OrderDetailsCard({
             You Pay
           </p>
           <p className="text-lg font-bold text-[#ed8716] tracking-tight">
-            8,829.6458{" "}
+            {formattedRadiumPrice}{" "}
             <span className="text-xs font-medium tracking-wide">SPUMP</span>
           </p>
         </div>
 
         {/* No wallet connected */}
-        <div className="flex items-center gap-1.5 text-xs text-gray-400">
-          <div className="w-3.5 h-3.5 rounded-sm border border-gray-300 shrink-0" />
-          No wallet connected
+        <div
+          className={cn(
+            "flex items-center gap-1.5 text-xs",
+            wallet ? "text-green-500" : "text-gray-400",
+          )}
+        >
+          <div
+            className={cn(
+              "size-1.5 rounded-sm border shrink-0",
+              wallet ? "border-green-400 bg-green-400" : "border-gray-300",
+            )}
+          />
+          {wallet ? `${wallet.name} connected` : "No wallet connected"}
         </div>
       </div>
     </div>

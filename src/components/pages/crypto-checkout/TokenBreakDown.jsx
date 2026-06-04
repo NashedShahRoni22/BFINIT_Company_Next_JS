@@ -1,7 +1,12 @@
+import { RefreshCw, Coins } from "lucide-react";
 import formatPrice from "@/utils/formatPrice";
-import { RefreshCw, Clock, Tag, Coins } from "lucide-react";
 
-export default function TokenBreakDown({ originalPrice, isYearly }) {
+export default function TokenBreakDown({
+  originalPrice,
+  formattedRadiumPrice,
+  tokenRate,
+  isYearly,
+}) {
   return (
     <div>
       <p className="text-[10px] font-semibold tracking-widest text-gray-400 uppercase mb-2">
@@ -52,7 +57,7 @@ export default function TokenBreakDown({ originalPrice, isYearly }) {
             </span>
           </div>
           <span className={`text-sm font-semibold text-gray-800`}>
-            $0.002840
+            €{tokenRate?.toFixed(6)}
           </span>
         </div>
 
@@ -64,7 +69,7 @@ export default function TokenBreakDown({ originalPrice, isYearly }) {
             </span>
           </div>
           <span className="text-sm font-semibold text-[#ed8716]">
-            8,829.6458{" "}
+            {formattedRadiumPrice}{" "}
             <span className=" font-medium tracking-wide text-xs">SPUMP</span>
           </span>
         </div>

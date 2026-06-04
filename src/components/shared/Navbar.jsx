@@ -126,17 +126,23 @@ export default function Navbar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  console.log(user);
+
   return (
     <nav
-      className={`fixed z-50 w-full border-b border-brand font-roboto ${isScrolled || !isHome ? "top-0 bg-white" : "top-0 bg-transparent"}`}>
+      className={`fixed z-50 w-full border-b border-brand font-roboto ${isScrolled || !isHome ? "top-0 bg-white" : "top-0 bg-transparent"}`}
+    >
       <Container>
         <section
-          className={`relative flex items-center justify-between py-4 text-black`}>
+          className={`relative flex items-center justify-between py-4 text-black`}
+        >
           {/* logo here  */}
           <Link
             onClick={toggleSubMenu}
             href={"/"}
-            className="inline-flex items-center gap-2 text-2xl font-semibold">
+            className="inline-flex items-center gap-2 text-2xl font-semibold"
+          >
             <Image
               width={1000}
               height={1000}
@@ -155,7 +161,8 @@ export default function Navbar() {
                   <div className="group hover:underline">
                     <span
                       onClick={() => toggleSubMenu(i)}
-                      className="flex cursor-pointer items-center gap-1">
+                      className="flex cursor-pointer items-center gap-1"
+                    >
                       {mi.name}
                       <BiChevronDown className="text-2xl" />
                     </span>
@@ -174,7 +181,8 @@ export default function Navbar() {
                                       onClick={() => setShowSubMenu(null)}
                                       key={i}
                                       href={mcc.link}
-                                      className="flex gap-1.5 duration-300 ease-linear hover:translate-x-3 hover:font-semibold hover:text-brand">
+                                      className="flex gap-1.5 duration-300 ease-linear hover:translate-x-3 hover:font-semibold hover:text-brand"
+                                    >
                                       <BiChevronRight className="min-w-fit text-2xl" />
                                       {mcc.name}
                                     </Link>
@@ -186,7 +194,8 @@ export default function Navbar() {
                                 onClick={() => setShowSubMenu(null)}
                                 href={mc.link}
                                 key={i}
-                                className="flex gap-1.5 duration-300 ease-linear hover:translate-x-3">
+                                className="flex gap-1.5 duration-300 ease-linear hover:translate-x-3"
+                              >
                                 {mc.icon ? (
                                   <Image
                                     width={1000}
@@ -216,7 +225,8 @@ export default function Navbar() {
                     onClick={toggleSubMenu}
                     key={i}
                     href={mi.link}
-                    className="flex items-center gap-2.5 hover:underline">
+                    className="flex items-center gap-2.5 hover:underline"
+                  >
                     {mi.name}
                     {/* <MdArrowOutward /> */}
                   </Link>
@@ -243,7 +253,8 @@ export default function Navbar() {
               <div className="relative" ref={userMenuRef}>
                 <button
                   onClick={() => setUserMenuOpen((p) => !p)}
-                  className="flex items-center gap-2 rounded-full border border-[#e4e4e7] bg-white px-3 py-1.5 text-sm font-medium text-[#09090b] transition-all duration-200 hover:bg-[#f4f4f5]">
+                  className="flex items-center gap-2 rounded-full border border-[#e4e4e7] bg-white px-3 py-1.5 text-sm font-medium text-[#09090b] transition-all duration-200 hover:bg-[#f4f4f5]"
+                >
                   {/* Avatar initials */}
                   <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand text-xs font-semibold text-white">
                     {user?.name?.charAt(0).toUpperCase() ?? "U"}
@@ -269,7 +280,8 @@ export default function Navbar() {
                     <Link
                       href="/my-orders"
                       onClick={() => setUserMenuOpen(false)}
-                      className="flex items-center gap-2 px-4 py-2.5 text-sm text-[#09090b] transition-colors hover:bg-[#f4f4f5]">
+                      className="flex items-center gap-2 px-4 py-2.5 text-sm text-[#09090b] transition-colors hover:bg-[#f4f4f5]"
+                    >
                       My Orders
                     </Link>
                     {/* Divider */}
@@ -280,7 +292,8 @@ export default function Navbar() {
                         logout();
                         setUserMenuOpen(false);
                       }}
-                      className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-[#ef4444] transition-colors hover:bg-[#fef2f2]">
+                      className="flex w-full items-center gap-2 px-4 py-2.5 text-sm text-[#ef4444] transition-colors hover:bg-[#fef2f2]"
+                    >
                       Log out
                     </button>
                   </div>
@@ -289,13 +302,15 @@ export default function Navbar() {
             ) : (
               <Link
                 href="/login"
-                className={`h-fit rounded-full border px-4 py-2 font-medium transition-all duration-300 ease-linear ${isScrolled || !isHome ? "border-brand/25 text-black hover:bg-gray-100" : "border-white/40 bg-white/20 text-black hover:bg-white/40"}`}>
+                className={`h-fit rounded-full border px-4 py-2 font-medium transition-all duration-300 ease-linear ${isScrolled || !isHome ? "border-brand/25 text-black hover:bg-gray-100" : "border-white/40 bg-white/20 text-black hover:bg-white/40"}`}
+              >
                 Login
               </Link>
             )}
             <Link
               href="/contact"
-              className={`group flex h-fit items-center gap-2.5 rounded-full border px-4 py-2 font-medium shadow transition-all duration-300 ease-linear ${isScrolled || !isHome ? "border-brand/25 bg-[#242D2B] text-white hover:bg-[#090B0B]" : "border-transparent bg-white text-black hover:bg-softGray"}`}>
+              className={`group flex h-fit items-center gap-2.5 rounded-full border px-4 py-2 font-medium shadow transition-all duration-300 ease-linear ${isScrolled || !isHome ? "border-brand/25 bg-[#242D2B] text-white hover:bg-[#090B0B]" : "border-transparent bg-white text-black hover:bg-softGray"}`}
+            >
               Contact{" "}
               <MdArrowOutward className="duration-300 ease-linear group-hover:rotate-45" />
             </Link>
@@ -315,13 +330,15 @@ export default function Navbar() {
                     {showChild !== i ? (
                       <button
                         onClick={() => setShowChild(i)}
-                        className="flex cursor-pointer items-center gap-1">
+                        className="flex cursor-pointer items-center gap-1"
+                      >
                         <BiChevronDown className="text-3xl" />
                       </button>
                     ) : (
                       <button
                         onClick={() => setShowChild("")}
-                        className="flex cursor-pointer items-center gap-1">
+                        className="flex cursor-pointer items-center gap-1"
+                      >
                         <BiChevronUp className="text-3xl" />
                       </button>
                     )}
@@ -342,7 +359,8 @@ export default function Navbar() {
                                     key={i}
                                     href={mcc.link}
                                     onClick={() => setShowNav(!showNav)}
-                                    className="flex gap-1.5 duration-300 ease-linear hover:translate-x-3 hover:font-semibold hover:text-brand">
+                                    className="flex gap-1.5 duration-300 ease-linear hover:translate-x-3 hover:font-semibold hover:text-brand"
+                                  >
                                     <BiChevronRight className="text-2xl" />
                                     {mcc.name}
                                   </Link>
@@ -354,7 +372,8 @@ export default function Navbar() {
                               href={mc.link}
                               key={i}
                               onClick={() => setShowNav(!showNav)}
-                              className="flex gap-1.5 duration-300 ease-linear hover:translate-x-3 hover:font-semibold hover:text-brand">
+                              className="flex gap-1.5 duration-300 ease-linear hover:translate-x-3 hover:font-semibold hover:text-brand"
+                            >
                               {mc.icon ? (
                                 <Image
                                   width={1000}
@@ -384,7 +403,8 @@ export default function Navbar() {
                   href={mi.link}
                   key={i}
                   onClick={() => setShowNav(!showNav)}
-                  className="flex items-center justify-between text-[18px]">
+                  className="flex items-center justify-between text-[18px]"
+                >
                   {mi.name}
                   {/* <MdArrowOutward /> */}
                 </Link>
@@ -397,7 +417,8 @@ export default function Navbar() {
                 <Link
                   href="/my-orders"
                   onClick={() => setShowNav(!showNav)}
-                  className="w-fit rounded border border-brand px-4 py-2 text-brand shadow">
+                  className="w-fit rounded border border-brand px-4 py-2 text-brand shadow"
+                >
                   My Orders
                 </Link>
                 <button
@@ -405,7 +426,8 @@ export default function Navbar() {
                     logout();
                     setShowNav(false);
                   }}
-                  className="w-fit rounded border border-[#ef4444] px-4 py-2 text-[#ef4444] shadow">
+                  className="w-fit rounded border border-[#ef4444] px-4 py-2 text-[#ef4444] shadow"
+                >
                   Log out
                 </button>
               </>
@@ -413,14 +435,16 @@ export default function Navbar() {
               <Link
                 href={"/login"}
                 onClick={() => setShowNav(!showNav)}
-                className="w-fit rounded border border-brand px-4 py-2 text-brand shadow">
+                className="w-fit rounded border border-brand px-4 py-2 text-brand shadow"
+              >
                 Login
               </Link>
             )}
             <Link
               href={"/contact"}
               onClick={() => setShowNav(!showNav)}
-              className="w-fit rounded bg-brand px-4 py-2 text-white shadow">
+              className="w-fit rounded bg-brand px-4 py-2 text-white shadow"
+            >
               Contact Us
             </Link>
           </div>

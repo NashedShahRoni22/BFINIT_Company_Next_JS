@@ -34,7 +34,7 @@ export default function Heading() {
       <div className="bg-purple-50 border border-purple-200 rounded-xl p-3 flex items-start gap-3">
         <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-white border border-purple-100">
           <Image
-            src="https://scottypumpkin.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhero.ecd1dcc2.png&w=640&q=75"
+            src="/icons/spump.webp"
             alt="SPUMP"
             width={40}
             height={40}

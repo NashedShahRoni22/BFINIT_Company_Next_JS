@@ -64,7 +64,7 @@ export default function LoginForm() {
       return;
     }
 
-    saveAuth(data);
+    saveAuth(data?.data);
 
     const redirect = searchParams.get("redirect") || "/";
     router.push(redirect);

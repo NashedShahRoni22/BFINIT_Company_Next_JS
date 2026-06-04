@@ -39,7 +39,7 @@ export default function CheckoutForm({ details, currencies, bankInfo }) {
   });
 
   const buildPayload = useCallback(() => {
-    const { pricing } = details;
+    const { id, pricing } = details;
     const {
       subscription_period_id,
       duration,
@@ -48,54 +48,58 @@ export default function CheckoutForm({ details, currencies, bankInfo }) {
       discount_amount,
     } = pricing;
 
-    const hasOffer = offer_percentage != null && offer_percentage > 0;
-    const offerDiscount = hasOffer
-      ? parseFloat(((total_base_price * offer_percentage) / 100).toFixed(2))
-      : 0;
-    const amount = parseFloat((total_base_price - offerDiscount).toFixed(2));
-
-    const selectedCurrency = currencies.find((c) => c.id === currencyId);
-    const currencyCode = selectedCurrency?.code ?? currencyId.toUpperCase();
-
     const payload = new FormData();
-    payload.append("package_id", details.id);
+    payload.append("package_id", id);
     payload.append("subscription_period_id", subscription_period_id);
-    payload.append("amount", amount);
-    payload.append("currency", currencyCode);
-    payload.append(
-      "payment_method",
-      paymentMethod === "bank" ? "bank_transfer" : "stripe",
-    );
+    payload.append("currency", "eur");
     payload.append("duration", duration);
 
-    if (offerDiscount > 0) {
-      payload.append("discount_amount", offerDiscount);
-      payload.append("discount_type", "percentage");
-    } else if (discount_amount > 0) {
-      payload.append("discount_amount", discount_amount);
-      payload.append("discount_type", "fixed");
-    }
+    if (isCryptoCurrencySelected) {
+      // Crypto: only send the required fields + solana payment method
+      payload.append("payment_method", "solana");
+    } else {
+      // EUR: full payload with amount, discounts, and bank/stripe fields
+      const hasOffer = offer_percentage != null && offer_percentage > 0;
+      const offerDiscount = hasOffer
+        ? parseFloat(((total_base_price * offer_percentage) / 100).toFixed(2))
+        : 0;
+      const amount = parseFloat((total_base_price - offerDiscount).toFixed(2));
 
-    if (paymentMethod === "bank") {
-      const manual = {
-        name: formData.sender_name,
-        account_no: formData.account_no,
-        bank_name: formData.bank_name,
-        branch: formData.branch,
-        phone: formData.phone,
-        ...(formData.transaction_id && {
-          transaction_id: formData.transaction_id,
-        }),
-        payment_at: formData.payment_at
-          ? new Date(formData.payment_at).toISOString()
-          : undefined,
-      };
-      payload.append("manual_payment", JSON.stringify(manual));
-      if (slipFile) payload.append("document", slipFile);
+      payload.append("amount", amount);
+      payload.append(
+        "payment_method",
+        paymentMethod === "bank" ? "bank_transfer" : "stripe",
+      );
+
+      if (offerDiscount > 0) {
+        payload.append("discount_amount", offerDiscount);
+        payload.append("discount_type", "percentage");
+      } else if (discount_amount > 0) {
+        payload.append("discount_amount", discount_amount);
+        payload.append("discount_type", "fixed");
+      }
+
+      if (paymentMethod === "bank") {
+        const manual = {
+          name: formData.sender_name,
+          account_no: formData.account_no,
+          bank_name: formData.bank_name,
+          branch: formData.branch,
+          phone: formData.phone,
+          ...(formData.transaction_id && {
+            transaction_id: formData.transaction_id,
+          }),
+          payment_at: formData.payment_at
+            ? new Date(formData.payment_at).toISOString()
+            : undefined,
+        };
+        payload.append("manual_payment", JSON.stringify(manual));
+        if (slipFile) payload.append("document", slipFile);
+      }
     }
 
     return payload;
-  }, [details, currencies, currencyId, paymentMethod, formData, slipFile]);
+  }, [details, paymentMethod, formData, slipFile, isCryptoCurrencySelected]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -117,7 +121,15 @@ export default function CheckoutForm({ details, currencies, bankInfo }) {
       const data = await res.json();
 
       if (data?.success) {
-        if (paymentMethod === "stripe") {
+        if (isCryptoCurrencySelected) {
+          const invoice_number = data.data.invoice.invoice_number;
+          const discountParam = selectedCurrency?.discount
+            ? `?discount=${selectedCurrency.discount}`
+            : "";
+          navigate.push(
+            `/checkout/crypto/${details.id}/${details.pricing.duration}/${invoice_number}${discountParam}`,
+          );
+        } else if (paymentMethod === "stripe") {
           const { client_secret } = data.data;
           if (client_secret) {
             setPendingOrderData(data.data);
@@ -127,7 +139,6 @@ export default function CheckoutForm({ details, currencies, bankInfo }) {
           }
         } else if (paymentMethod === "bank") {
           const invoice_number = data.data.invoice.invoice_number;
-          // navigate.push(`/order-confirmation/${orderId}/${invoiceId}`);
           navigate.push(`/order-confirmation/${invoice_number}`);
         }
       } else {
@@ -142,7 +153,6 @@ export default function CheckoutForm({ details, currencies, bankInfo }) {
 
   const handleStripeSuccess = () => {
     const invoice_number = pendingOrderData.invoice.invoice_number;
-    // navigate.push(`/order-confirmation/${orderId}/${invoiceId}`);
     navigate.push(`/order-confirmation/${invoice_number}`);
   };
 

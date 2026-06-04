@@ -149,7 +149,10 @@ export default function Register() {
     };
 
     setLoading(true);
-    const { data, ok, error } = await post("/api/v1/auth/register", payload);
+    const { data, ok, error } = await post(
+      "/api/v1/auth/storeOwnerRegister",
+      payload,
+    );
     setLoading(false);
 
     if (!ok) {
@@ -195,11 +198,14 @@ export default function Register() {
       email: pending.email,
       phone: pending.phone,
       password: pending.password,
-      otpCode,
+      otp_code: otpCode,
     };
 
     setLoading(true);
-    const { data, ok, error } = await post("/api/v1/auth/register", payload);
+    const { data, ok, error } = await post(
+      "/api/v1/auth/storeOwnerRegister",
+      payload,
+    );
     setLoading(false);
 
     if (!ok) {
@@ -247,7 +253,8 @@ export default function Register() {
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
-                      strokeWidth={2}>
+                      strokeWidth={2}
+                    >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -257,7 +264,8 @@ export default function Register() {
                   </div>
                   <h1
                     className="text-2xl font-semibold tracking-tight text-[#09090b]"
-                    style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  >
                     Check your email
                   </h1>
                   <p className="mt-1.5 text-sm text-[#71717a]">
@@ -270,7 +278,8 @@ export default function Register() {
 
                 <form
                   onSubmit={handleOtpSubmit}
-                  className="flex flex-col gap-5">
+                  className="flex flex-col gap-5"
+                >
                   {/* OTP boxes */}
                   <div className="flex flex-col gap-1.5">
                     <label className="text-sm font-medium text-[#09090b]">
@@ -278,7 +287,8 @@ export default function Register() {
                     </label>
                     <div
                       className="flex justify-between gap-2"
-                      onPaste={handleOtpPaste}>
+                      onPaste={handleOtpPaste}
+                    >
                       {otp.map((digit, i) => (
                         <input
                           key={i}
@@ -311,14 +321,16 @@ export default function Register() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="mt-1 h-10 w-full rounded-lg bg-brand text-sm font-medium text-white transition-all duration-150 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60">
+                    className="mt-1 h-10 w-full rounded-lg bg-brand text-sm font-medium text-white transition-all duration-150 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
+                  >
                     {loading ? "Verifying…" : "Verify & Create Account"}
                   </button>
 
                   <button
                     type="button"
                     onClick={handleGoBack}
-                    className="text-center text-sm text-[#71717a] transition-colors hover:text-[#09090b]">
+                    className="text-center text-sm text-[#71717a] transition-colors hover:text-[#09090b]"
+                  >
                     ← Use a different email
                   </button>
                 </form>
@@ -340,7 +352,8 @@ export default function Register() {
                   <div className="flex flex-col gap-1.5">
                     <label
                       htmlFor="name"
-                      className="text-sm font-medium text-[#09090b]">
+                      className="text-sm font-medium text-[#09090b]"
+                    >
                       Full Name
                     </label>
                     <input
@@ -362,7 +375,8 @@ export default function Register() {
                   <div className="flex flex-col gap-1.5">
                     <label
                       htmlFor="email"
-                      className="text-sm font-medium text-[#09090b]">
+                      className="text-sm font-medium text-[#09090b]"
+                    >
                       Email
                     </label>
                     <input
@@ -384,7 +398,8 @@ export default function Register() {
                   <div className="flex flex-col gap-1.5">
                     <label
                       htmlFor="phone"
-                      className="text-sm font-medium text-[#09090b]">
+                      className="text-sm font-medium text-[#09090b]"
+                    >
                       Phone Number
                     </label>
                     <input
@@ -406,7 +421,8 @@ export default function Register() {
                   <div className="flex flex-col gap-1.5">
                     <label
                       htmlFor="password"
-                      className="text-sm font-medium text-[#09090b]">
+                      className="text-sm font-medium text-[#09090b]"
+                    >
                       Password
                     </label>
                     <div className="relative">
@@ -425,7 +441,8 @@ export default function Register() {
                         onClick={() => setShowPassword((p) => !p)}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-[#71717a] transition-colors hover:text-[#09090b]"
                         tabIndex={-1}
-                        aria-label="Toggle password visibility">
+                        aria-label="Toggle password visibility"
+                      >
                         {showPassword ? (
                           <AiOutlineEyeInvisible className="text-lg" />
                         ) : (
@@ -444,7 +461,8 @@ export default function Register() {
                   <div className="flex flex-col gap-1.5">
                     <label
                       htmlFor="confirmPassword"
-                      className="text-sm font-medium text-[#09090b]">
+                      className="text-sm font-medium text-[#09090b]"
+                    >
                       Confirm Password
                     </label>
                     <div className="relative">
@@ -463,7 +481,8 @@ export default function Register() {
                         onClick={() => setShowConfirmPassword((p) => !p)}
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-[#71717a] transition-colors hover:text-[#09090b]"
                         tabIndex={-1}
-                        aria-label="Toggle confirm password visibility">
+                        aria-label="Toggle confirm password visibility"
+                      >
                         {showConfirmPassword ? (
                           <AiOutlineEyeInvisible className="text-lg" />
                         ) : (
@@ -487,7 +506,8 @@ export default function Register() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="mt-1 h-10 w-full rounded-lg bg-brand text-sm font-medium text-white transition-all duration-150 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60">
+                    className="mt-1 h-10 w-full rounded-lg bg-brand text-sm font-medium text-white transition-all duration-150 hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
+                  >
                     {loading ? "Sending OTP…" : "Continue"}
                   </button>
                 </form>
@@ -502,7 +522,8 @@ export default function Register() {
                   Already have an account?{" "}
                   <Link
                     href="/login"
-                    className="font-medium text-brand hover:underline">
+                    className="font-medium text-brand hover:underline"
+                  >
                     Sign in
                   </Link>
                 </p>
@@ -514,13 +535,15 @@ export default function Register() {
             By creating an account, you agree to our{" "}
             <Link
               href="/terms-and-conditions"
-              className="underline hover:text-[#71717a]">
+              className="underline hover:text-[#71717a]"
+            >
               Terms of Service
             </Link>{" "}
             and{" "}
             <Link
               href="/privacy-policy"
-              className="underline hover:text-[#71717a]">
+              className="underline hover:text-[#71717a]"
+            >
               Privacy Policy
             </Link>
             .

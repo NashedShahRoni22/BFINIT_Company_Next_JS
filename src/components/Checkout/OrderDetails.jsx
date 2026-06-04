@@ -36,8 +36,6 @@ const PAYMENT_METHODS = [
   },
 ];
 
-const DISCOUNT_CURRENCY_IDS = [""];
-
 function CopyField({ label, value }) {
   const [copied, setCopied] = useState(false);
 
@@ -106,10 +104,6 @@ export default function OrderDetails({
   const finalTotal = hasOffer
     ? (total_base_price - parseFloat(discountAmount)).toFixed(2)
     : total_base_price.toFixed(2);
-
-  const cryptoCheckoutUrl = selectedCurrency?.discount
-    ? `/checkout/crypto/${id}/${duration}?discount=${selectedCurrency?.discount}`
-    : `/checkout/crypto/${id}/${duration}`;
 
   const handlePayment = (id) => {
     setLocalPayment(id);
@@ -389,12 +383,13 @@ export default function OrderDetails({
         )}
 
         {isCryptoCurrencySelected && (
-          <Link
-            href={cryptoCheckoutUrl}
+          <button
+            type="submit"
+            disabled={isSubmitting}
             className="w-full inline-block text-center rounded-xl bg-[#186BB5] py-3.5 text-sm font-bold text-white transition-colors hover:bg-[#145fa0] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Continue with Crypto
-          </Link>
+            {isSubmitting ? "Processing…" : "Continue with Crypto"}
+          </button>
         )}
       </div>
 
