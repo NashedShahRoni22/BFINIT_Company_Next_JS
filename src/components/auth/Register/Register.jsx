@@ -22,6 +22,7 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  console.log(errors);
 
   // OTP step state
   const [otpStep, setOtpStep] = useState(false);
@@ -311,12 +312,6 @@ export default function Register() {
                       <p className="text-xs text-[#ef4444]">{errors.otp}</p>
                     )}
                   </div>
-
-                  {errors.form && (
-                    <p className="rounded-lg border border-[#fecaca] bg-[#fef2f2] px-3 py-2 text-sm text-[#ef4444]">
-                      {errors.form}
-                    </p>
-                  )}
 
                   <button
                     type="submit"

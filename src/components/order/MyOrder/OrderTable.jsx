@@ -1,3 +1,7 @@
+import React from "react";
+import Link from "next/link";
+import { Building2, CreditCard, ArrowRight } from "lucide-react";
+
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -7,12 +11,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Building2, CreditCard } from "lucide-react";
-import Link from "next/link";
-import React from "react";
 
 function formatDate(dateStr) {
   if (!dateStr) return "—";
+
   return new Date(dateStr).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
@@ -20,108 +22,118 @@ function formatDate(dateStr) {
   });
 }
 
-export default function OrderTable({ orders }) {
-  const table_heading = [
-    "Invoice",
-    "Package Name",
-    "Price",
-    "Ordered At",
-    "Method",
-    "Status",
-    "Action",
-  ];
-
-  const cellClass = "border border-gray-300 text-muted-foreground text-center";
-
+export default function OrderTable({ orders = [] }) {
   const formattedOrders = orders.map((order) => {
     const amount = Number(order.packageInvoice?.payment_amount);
-    const duration = order.subscriptionPeriod.duration === 1 ? "month" : "year";
 
     return {
       ...order,
-      formattedAmount: Number.isInteger(amount) ? amount : amount.toFixed(2),
-      duration,
+      formattedAmount: Number.isInteger(amount)
+        ? amount
+        : amount.toFixed(2),
+      duration:
+        order.subscriptionPeriod?.duration === 1 ? "month" : "year",
     };
   });
 
-  const getTableData = (order, idx) => {
-    console.log(order);
-    return [
-      order.packageInvoice.invoice_number,
-      order.package.package_type,
-
-      <>
-        <span className="font-inter text-base text-start font-bold">
-          {"\u20AC"} {order.formattedAmount}
-        </span>
-        <span>/</span>
-        <span className="text-sm">{order.duration}</span>
-      </>,
-
-      formatDate(order.created_at),
-
-      <span key={idx} className="flex items-center justify-center">
-        {order.packageInvoice.payment_method === "bank_transfer" ? (
-          <span className="flex items-center gap-1">
-            <Building2 size={14} /> Bank
-          </span>
-        ) : (
-          <span className="flex items-center gap-1">
-            <CreditCard size={14} />
-            Stripe
-          </span>
-        )}
-      </span>,
-
-      <Badge className="bg-brand/20 capitalize text-gray-700" key={idx}>
-        {order.packageInvoice?.status}
-      </Badge>,
-
-      <button
-        className="bg-brand/90 rounded-sm text-xs px-1.5 py-1.5 text-white border border-brand/90"
-        type="button"
-        key={idx}>
-        <Link
-          href={`/my-orders/${order.packageInvoice.invoice_number}`}
-          className="cursor-pointer transition">
-          View Details
-        </Link>
-      </button>,
-    ];
-  };
-
   return (
-    <Table className="w-full border-spacing-y-px">
-      <TableHeader className={"bg-brand/20"}>
-        <TableRow>
-          {table_heading.map((heading) => (
-            <TableHead
-              key={heading}
-              className={"border border-gray-300 text-center"}>
-              {heading}
+    <div className="overflow-hidden rounded-xl border bg-white">
+      <Table>
+        <TableHeader>
+          <TableRow className="bg-muted/30 hover:bg-muted/30">
+            <TableHead className="font-semibold">Invoice</TableHead>
+            <TableHead className="font-semibold">Package</TableHead>
+            <TableHead className="font-semibold">Price</TableHead>
+            <TableHead className="font-semibold">Ordered At</TableHead>
+            <TableHead className="font-semibold">Method</TableHead>
+            <TableHead className="font-semibold">Status</TableHead>
+            <TableHead className="text-right font-semibold">
+              Action
             </TableHead>
-          ))}
-        </TableRow>
-      </TableHeader>
+          </TableRow>
+        </TableHeader>
 
-      <TableBody>
-        {formattedOrders.map((order, idx) => {
-          const rowData = getTableData(order, idx);
-          return (
-            <TableRow key={idx}>
-              {rowData.map((item, i) => (
-                <TableCell
-                  key={i}
-                  className={`
-                    ${cellClass}
-                  `}>
-                  {item}
+        <TableBody>
+          {formattedOrders.length > 0 ? (
+            formattedOrders.map((order, index) => (
+              <TableRow
+                key={index}
+                className="transition-colors hover:bg-muted/40">
+                {/* Invoice */}
+                <TableCell className="font-medium">
+                  #{order.packageInvoice?.invoice_number}
                 </TableCell>
-              ))}
+
+                {/* Package */}
+                <TableCell>
+                  {order.package?.package_type}
+                </TableCell>
+
+                {/* Price */}
+                <TableCell>
+                  <div className="flex items-baseline gap-1">
+                    <span className="font-semibold text-foreground">
+                      € {order.formattedAmount}
+                    </span>
+
+                    <span className="text-xs text-muted-foreground">
+                      / {order.duration}
+                    </span>
+                  </div>
+                </TableCell>
+
+                {/* Ordered At */}
+                <TableCell className="text-muted-foreground">
+                  {formatDate(order.created_at)}
+                </TableCell>
+
+                {/* Payment Method */}
+                <TableCell>
+                  {order.packageInvoice?.payment_method ===
+                  "bank_transfer" ? (
+                    <div className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm">
+                      <Building2 size={14} />
+                      <span>Bank</span>
+                    </div>
+                  ) : (
+                    <div className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm">
+                      <CreditCard size={14} />
+                      <span>Stripe</span>
+                    </div>
+                  )}
+                </TableCell>
+
+                {/* Status */}
+                <TableCell>
+                  <Badge
+                    variant="secondary"
+                    className="rounded-full capitalize px-3 py-1">
+                    {order.packageInvoice?.status}
+                  </Badge>
+                </TableCell>
+
+                {/* Action */}
+                <TableCell className="text-right">
+                  <Link
+                    href={`/my-orders/${order.packageInvoice?.invoice_number}`}
+                    className="inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm font-medium transition-colors hover:bg-muted">
+                    View
+                    <ArrowRight size={15} />
+                  </Link>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell
+                colSpan={7}
+                className="h-32 text-center text-muted-foreground">
+                No orders found.
+              </TableCell>
             </TableRow>
-          );
-        })}
-      </TableBody>
-    </Table>
+          )}
+        </TableBody>
+      </Table>
+    </div>
   );
 }

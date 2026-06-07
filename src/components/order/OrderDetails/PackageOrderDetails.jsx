@@ -45,7 +45,7 @@ export function PackageOrderDetails({ order }) {
 
   return (
     <Container>
-      <div className="min-h-screen bg-muted/40 py-8 px-4">
+      <div className="min-h-screen py-8 px-4">
         <div className=" space-y-4">
           {/* ── Page Header ── */}
           <div className="flex items-center justify-between mb-2">

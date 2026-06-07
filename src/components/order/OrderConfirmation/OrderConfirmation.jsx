@@ -97,7 +97,7 @@ export default function OrderConfirmation({ invoice }) {
 
   return (
     <Container>
-      <div className="min-h-screen bg-gray-50 px-4 py-10 pt-28">
+      <div className="min-h-screen px-4 py-10 pt-28">
         <div className="space-y-3">
           {/* ── Hero bar ──────────────────────────────────────────────── */}
           <div className="flex flex-wrap items-center gap-4 rounded-xl border border-gray-200 bg-white px-6 py-5">
