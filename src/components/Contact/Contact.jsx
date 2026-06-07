@@ -179,7 +179,7 @@ export default function Contact() {
 
   return (
     <Container>
-      <section className="mx-5 py-10 md:container md:mx-auto md:py-28">
+      <section className="py-10 md:py-28">
         <div className="grid gap-8 md:gap-16 lg:grid-cols-2">
           <div className="flex flex-col gap-4 md:gap-8">
             <h5 className="font-semibold md:text-2xl">Contact Us</h5>
@@ -229,7 +229,7 @@ export default function Contact() {
         <div className="mt-10 grid gap-8 md:mt-20 md:gap-16 lg:grid-cols-2">
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col gap-5 rounded p-8 shadow">
+            className="flex flex-col gap-5 rounded p-4 md:p-8 shadow">
             <Input
               placeholder="Enter Name*"
               type="text"
