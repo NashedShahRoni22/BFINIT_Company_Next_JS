@@ -11,6 +11,7 @@ import Container from "./Container";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LogOut } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -88,7 +89,7 @@ export default function Navbar() {
 
       setUpdatedMenuItems(updatedMenu);
     }
-  }, [hostingProducts]);
+  }, [hostingProducts,updatedMenuItems]);
 
   // Toggle Submenu in Destop View
   const toggleSubMenu = (index) => {
@@ -129,7 +130,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed z-50 w-full border-b border-brand font-roboto ${isScrolled || !isHome ? "top-0 bg-white" : "top-0 bg-transparent"}`}
+      className={`fixed z-50 w-full border-b border-brand font-roboto ${isScrolled || !isHome ? "top-0 bg-white" : "top-0 bg-white md:bg-transparent"}`}
     >
       <Container>
         <section
@@ -409,31 +410,23 @@ export default function Navbar() {
               )}
             </div>
           ))}
-          <div className="flex gap-3 mt-2">
+          <div className="flex flex-col gap-3 mt-2">
             {isAuthenticated ? (
               <>
                 <Link
                   href="/my-orders"
                   onClick={() => setShowNav(!showNav)}
-                  className="w-fit rounded border border-brand px-4 py-2 text-brand shadow"
+                  className="w-full text-center rounded border border-brand px-4 py-2 text-brand shadow"
                 >
                   My Orders
                 </Link>
-                <button
-                  onClick={() => {
-                    logout();
-                    setShowNav(false);
-                  }}
-                  className="w-fit rounded border border-[#ef4444] px-4 py-2 text-[#ef4444] shadow cursor-pointer"
-                >
-                  Log out
-                </button>
+               
               </>
             ) : (
               <Link
                 href={"/login"}
                 onClick={() => setShowNav(!showNav)}
-                className="w-fit rounded border border-brand px-4 py-2 text-brand shadow"
+                className="w-full text-center rounded border border-brand px-4 py-2 text-brand shadow cursor-pointer"
               >
                 Login
               </Link>
@@ -441,11 +434,25 @@ export default function Navbar() {
             <Link
               href={"/contact"}
               onClick={() => setShowNav(!showNav)}
-              className="w-fit rounded bg-brand px-4 py-2 text-white shadow"
+              className="w-full text-center rounded bg-brand px-4 py-2 text-white shadow"
             >
               Contact Us
             </Link>
+          
           </div>
+           <div className="my-auto mb-12">
+             {
+              isAuthenticated &&  <button
+                  onClick={() => {
+                    logout();
+                    setShowNav(false);
+                  }}
+                  className="w-full font-bold flex gap-1 items-center justify-center text-center rounded border border-red-600 px-4 py-2 text-white bg-red-600 shadow cursor-pointer"
+                >
+                <LogOut  size={20}/>  Log out
+                </button>
+            }
+           </div>
         </div>
       )}
     </nav>
