@@ -89,7 +89,7 @@ export default function Navbar() {
 
       setUpdatedMenuItems(updatedMenu);
     }
-  }, [hostingProducts,updatedMenuItems]);
+  }, [hostingProducts]);
 
   // Toggle Submenu in Destop View
   const toggleSubMenu = (index) => {
@@ -420,7 +420,6 @@ export default function Navbar() {
                 >
                   My Orders
                 </Link>
-               
               </>
             ) : (
               <Link
@@ -438,21 +437,20 @@ export default function Navbar() {
             >
               Contact Us
             </Link>
-          
           </div>
-           <div className="my-auto mb-12">
-             {
-              isAuthenticated &&  <button
-                  onClick={() => {
-                    logout();
-                    setShowNav(false);
-                  }}
-                  className="w-full font-bold flex gap-1 items-center justify-center text-center rounded border border-red-600 px-4 py-2 text-white bg-red-600 shadow cursor-pointer"
-                >
-                <LogOut  size={20}/>  Log out
-                </button>
-            }
-           </div>
+          <div className="my-auto mb-12">
+            {isAuthenticated && (
+              <button
+                onClick={() => {
+                  logout();
+                  setShowNav(false);
+                }}
+                className="w-full font-bold flex gap-1 items-center justify-center text-center rounded border border-red-600 px-4 py-2 text-white bg-red-600 shadow cursor-pointer"
+              >
+                <LogOut size={20} /> Log out
+              </button>
+            )}
+          </div>
         </div>
       )}
     </nav>

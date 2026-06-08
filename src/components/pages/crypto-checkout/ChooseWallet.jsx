@@ -16,6 +16,8 @@ export default function ChooseWallet({
   formattedRadiumPrice,
   onPay,
   txStatus,
+  txError,
+  signature,
 }) {
   const isLoading = ["building", "awaiting", "confirming"].includes(txStatus);
   const isSuccess = txStatus === "success";
@@ -98,6 +100,25 @@ export default function ChooseWallet({
 
       {walletError && (
         <p className="text-xs text-red-500 text-center mt-1">{walletError}</p>
+      )}
+
+      {txStatus === "error" && txError && (
+        <p className="text-xs text-red-500 text-center mt-1">{txError}</p>
+      )}
+
+      {isSuccess && txError && (
+        <p className="text-xs text-amber-500 text-center mt-2">{txError}</p>
+      )}
+
+      {isSuccess && signature && (
+        <a
+          href={`https://solscan.io/tx/${signature}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block text-xs text-blue-500 text-center mt-1 underline"
+        >
+          View on Solscan
+        </a>
       )}
 
       {/* Pay button */}

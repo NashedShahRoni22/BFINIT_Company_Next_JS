@@ -15,16 +15,20 @@ import TokenBreakDown from "./TokenBreakDown";
 import ChooseWallet from "./ChooseWallet";
 import { ECOM_BASE_URL } from "@/config";
 import { formatTokenAmount } from "@/utils/formatTokenAmount";
+import CryptoCheckoutSkeleton from "@/components/skeletons/CryptoCheckoutSkeleton";
+import useAuth from "@/hooks/useAuth";
 
 const MINT_ADDRESS = process.env.NEXT_PUBLIC_SPUMP_MINT_ADDRESS;
 const RECEIVER_ADDRESS = process.env.NEXT_PUBLIC_RECEIVER_ADDRESS;
 const RPC_ENDPOINT = process.env.NEXT_PUBLIC_RPC_ENDPOINT;
 
 export default function CryptoCheckout() {
-  const { packageId, duration: durationQuery } = useParams();
+  const { packageId, duration: durationQuery, invoice_number } = useParams();
+  const { token } = useAuth();
+
   const [loadingPack, setLoadingPack] = useState(true);
   const [loadinEurToUsd, setLoadingEurToUsd] = useState(true);
-  const [loadingRadiumPrice, setLoadingRadiumPrice] = useState(true);
+  const [loadingTokenPrice, setLoadingTokenPrice] = useState(true);
   const [packDetails, setPackDetails] = useState({});
   const [eurToUsdRate, setEurToUsdRate] = useState(null);
   const [tokenRate, setTokenRate] = useState(null);
@@ -92,26 +96,56 @@ export default function CryptoCheckout() {
   }, []);
 
   // fetch radium price
+  const fetchRadiumPrice = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_RAYDIUM_API_URL}?mints=${process.env.NEXT_PUBLIC_SPUMP_MINT_ADDRESS}`,
+    );
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    const price = data?.success
+      ? parseFloat(data.data[process.env.NEXT_PUBLIC_SPUMP_MINT_ADDRESS])
+      : null;
+
+    if (price === null || isNaN(price))
+      throw new Error("Raydium returned no price");
+    return price;
+  };
+
+  // fetch jupiter price
+  const fetchJupiterPrice = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_JUP_API_URL}?ids=${process.env.NEXT_PUBLIC_SPUMP_MINT_ADDRESS}`,
+    );
+    if (!res.ok) throw new Error(`Jupiter HTTP ${res.status}`);
+    const data = await res.json();
+
+    const price = data?.[process.env.NEXT_PUBLIC_SPUMP_MINT_ADDRESS]?.usdPrice;
+
+    if (!price || isNaN(price)) throw new Error("Jupiter returned no price");
+    return parseFloat(price);
+  };
+
+  // fetch radium price
   useEffect(() => {
-    const fetchRadiumPrice = async () => {
+    const fetchTokenPrice = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_RAYDIUM_API_URL}?mints=${process.env.NEXT_PUBLIC_SPUMP_MINT_ADDRESS}`,
-        );
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        if (data?.success)
-          setTokenRate(
-            parseFloat(data.data[process.env.NEXT_PUBLIC_SPUMP_MINT_ADDRESS]),
-          );
-      } catch (e) {
-        console.error("Failed to fetch token rate:", e);
+        const price = await fetchRadiumPrice();
+        setTokenRate(price);
+      } catch {
+        try {
+          console.warn("Raydium failed, falling back to Jupiter...");
+          const price = await fetchJupiterPrice();
+          setTokenRate(price);
+        } catch (e) {
+          console.error("Both Raydium and Jupiter failed:", e);
+        }
       } finally {
-        setLoadingRadiumPrice(false);
+        setLoadingTokenPrice(false);
       }
     };
 
-    fetchRadiumPrice();
+    fetchTokenPrice();
   }, []);
 
   const connectWallet = async (name) => {
@@ -120,14 +154,26 @@ export default function CryptoCheckout() {
       let provider, publicKey;
 
       if (name === "Phantom") {
-        provider = window?.phantom?.solana ?? window?.solana;
-        if (!provider?.isPhantom) throw new Error("Phantom not installed");
-        const resp = await provider.connect();
+        provider = window?.phantom?.solana;
+        if (!provider) throw new Error("Phantom not installed");
+        if (!provider.isPhantom) throw new Error("Phantom not found");
+
+        const resp = await provider.connect().catch((e) => {
+          if (e.code === 4001) throw new Error("Connection rejected");
+          if (e.message === "Unexpected error")
+            throw new Error("Please unlock your Phantom wallet and try again");
+          throw e;
+        });
         publicKey = resp.publicKey.toString();
       } else {
         provider = window?.solflare;
         if (!provider?.isSolflare) throw new Error("Solflare not installed");
-        await provider.connect();
+
+        await provider.connect().catch((e) => {
+          if (e.code === 4001) throw new Error("Connection rejected");
+          throw new Error("Please unlock your Solflare wallet and try again");
+        });
+
         await new Promise((r) => setTimeout(r, 100));
         if (!provider.publicKey)
           throw new Error("Solflare: publicKey unavailable");
@@ -161,20 +207,17 @@ export default function CryptoCheckout() {
       const toPubkey = new PublicKey(RECEIVER_ADDRESS);
       const mintPubkey = new PublicKey(MINT_ADDRESS);
 
-      // Get token decimals
       const mintInfo = await connection.getParsedAccountInfo(mintPubkey);
       const decimals = mintInfo.value?.data?.parsed?.info?.decimals ?? 6;
       const rawAmount = BigInt(
         Math.round(radiumTotalPrice * Math.pow(10, decimals)),
       );
 
-      // Get ATAs
       const fromATA = await getAssociatedTokenAddress(mintPubkey, fromPubkey);
       const toATA = await getAssociatedTokenAddress(mintPubkey, toPubkey);
 
       const tx = new Transaction();
 
-      // Create receiver ATA if it doesn't exist
       try {
         await getAccount(connection, toATA);
       } catch {
@@ -188,20 +231,16 @@ export default function CryptoCheckout() {
         );
       }
 
-      // Add transfer instruction
       tx.add(createTransferInstruction(fromATA, toATA, fromPubkey, rawAmount));
 
-      // Set blockhash and fee payer
       const { blockhash, lastValidBlockHeight } =
         await connection.getLatestBlockhash();
       tx.recentBlockhash = blockhash;
       tx.feePayer = fromPubkey;
 
-      // Sign
       setTxStatus("awaiting");
       const signedTx = await wallet.provider.signTransaction(tx);
 
-      // Broadcast & confirm
       setTxStatus("confirming");
       const sig = await connection.sendRawTransaction(signedTx.serialize(), {
         skipPreflight: false,
@@ -212,12 +251,44 @@ export default function CryptoCheckout() {
       );
 
       setSignature(sig);
-      setTxStatus("success");
+
+      // verify with backend
+      try {
+        const res = await fetch(
+          `${ECOM_BASE_URL}/api/v1/package-order/payment/verify`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              txSignature: sig,
+              invoiceNumber: invoice_number,
+              walletAddress: wallet.publicKey,
+            }),
+          },
+        );
+
+        if (!res.ok) throw new Error(`Verify failed: ${res.status}`);
+        const data = await res.json();
+        console.log("Payment verified:", data);
+
+        setTxStatus("success");
+      } catch (verifyErr) {
+        console.error("Backend verify failed:", verifyErr);
+        setTxStatus("success");
+        setTxError(
+          `Payment sent but verification pending. Save your transaction ID: ${sig}`,
+        );
+      }
     } catch (e) {
       setTxError(e.message ?? "Transaction failed");
       setTxStatus("error");
     }
   };
+
+  const isLoading = loadingPack || loadinEurToUsd || loadingTokenPrice;
 
   return (
     <main className="py-14 min-h-dvh md:py-28">
@@ -228,32 +299,40 @@ export default function CryptoCheckout() {
 
           {/* Right: cards */}
           <div className="space-y-3">
-            <OrderDetailsCard
-              packDetails={packDetails}
-              perMonthPrice={perMonthPrice}
-              originalPrice={originalPrice}
-              discountAmount={discountAmount}
-              subTotalPrice={subTotalPrice}
-              formattedRadiumPrice={formattedRadiumPrice}
-              isYearly={isYearly}
-              duration={duration}
-              wallet={wallet}
-            />
-            <TokenBreakDown
-              originalPrice={originalPrice}
-              formattedRadiumPrice={formattedRadiumPrice}
-              tokenRate={tokenRate}
-              isYearly={isYearly}
-            />
-            <ChooseWallet
-              wallet={wallet}
-              walletError={walletError}
-              onConnect={connectWallet}
-              onDisconnect={disconnectWallet}
-              formattedRadiumPrice={formattedRadiumPrice}
-              onPay={handlePay}
-              txStatus={txStatus}
-            />
+            {isLoading ? (
+              <CryptoCheckoutSkeleton />
+            ) : (
+              <>
+                <OrderDetailsCard
+                  packDetails={packDetails}
+                  perMonthPrice={perMonthPrice}
+                  originalPrice={originalPrice}
+                  discountAmount={discountAmount}
+                  subTotalPrice={subTotalPrice}
+                  formattedRadiumPrice={formattedRadiumPrice}
+                  isYearly={isYearly}
+                  duration={duration}
+                  wallet={wallet}
+                />
+                <TokenBreakDown
+                  originalPrice={originalPrice}
+                  formattedRadiumPrice={formattedRadiumPrice}
+                  tokenRate={tokenRate}
+                  isYearly={isYearly}
+                />
+                <ChooseWallet
+                  wallet={wallet}
+                  walletError={walletError}
+                  onConnect={connectWallet}
+                  onDisconnect={disconnectWallet}
+                  formattedRadiumPrice={formattedRadiumPrice}
+                  onPay={handlePay}
+                  txStatus={txStatus}
+                  txError={txError}
+                  signature={signature}
+                />
+              </>
+            )}
           </div>
         </div>
       </Container>
